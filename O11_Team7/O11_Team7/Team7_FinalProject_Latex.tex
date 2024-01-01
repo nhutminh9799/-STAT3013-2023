@@ -1,0 +1,1080 @@
+\documentclass{ieeeojies}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{sectsty}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{colortbl}
+\usepackage{adjustbox}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+    
+\begin{document}
+
+\title{STOCK PRICE FORECASTING WITH STATISTICS ANALYSIS AND MACHINE LEARNING}
+\author{\uppercase{Tran minh nguyen hong}\authorrefmark{1},
+\uppercase{Le Huu Bach\authorrefmark{2}, and Nguyen Trung Kien
+}.\authorrefmark{3}}
+
+\address[1]{University of Information Technology Ho Chi Minh City, Vietnam(e-mail: 21522107@gm.uit.edu.vn)}
+\address[2]{University of Information Technology Ho Chi Minh City, Vietnam(e-mail: 21521844@gm.uit.edu.vn)}
+\address[3]{University of Information Technology Ho Chi Minh City, Vietnam(e-mail: 21522247@gm.uit.edu.vn)}
+
+\markboth
+{Author \headeretal: Tran Minh Nguyen Hong, Nguyen Trung Kien, Le Huu Bach}
+{Author \headeretal: Tran Minh Nguyen Hong, Nguyen Trung Kien, Le Huu Bach}
+
+
+
+\begin{abstract}
+It is commonly believed that stock trading plays a vital role in financial market nowadays. Because of its importance, there is already a variety of approaches to analyze stock price. This document will aim to provide brief insight of advanced statistical analysis techniques and machine learning algorithm, namely Linear Regression, ARIMA, SARIMA, DLM, RNN, LSTM, CNN - GRU, SVR, DNN and apply them to predict the future stock price of 3 well-known banks in Vietnam (ACB, Agribank and Vietcombank) in a period of 5 years from 2018. By collecting the result after prediction, we will also perform accuracy evaluation based on that to compare how effective the model or the method is to each data set. 
+\end{abstract}
+
+\begin{keywords}
+Stock prices, Forecasting, Machine Learning, Linear Regression, ARIMA, SVR, LSTM, SARIMA, DLM, CNN-GRU, DNN.
+\end{keywords}
+
+\titlepgskip=-15pt
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+    \hspace{0.4cm}In recent days, forecasting stock price has drawn a lot of interest in various fields, especially financial analysis, as business decisions are heavily affected by rapid, accurate stock price forecasting and are also a way to evaluate the evolution of machine learning/training. 
+    
+    To be precise, the process of predicting and interpreting such chaotic and unmanageable data is nearly impossible for investors, traders and analysts. Throughout the time, there has already been a variety of traditional approaches to analyze stock price. However, those aforementioned methods show their untrustworthy in the long run, while data has more complex patterns or becomes larger in row from time to time, notably time series data like stock prices. 
+    
+    Having acknowledged such problems, modern analysts have came up with multiple applications of Machine Learning in finance, creating an enormous number of methods applying Machine Learning algorithm, statistics analysis and also hybrids of both modern – traditional ways to predict the stock price. This study will demonstrate the concept of some popular Machine Learning algorithms and statistics time series models then apply them to the real-time data set of 3 popular banks in Vietnam (ACB, Agribank and Vietcombank). The result of the study will be used to choose the optimal model for interpreting stock value, ranking enterprises…
+    
+    Methods used in this document include Linear Regression, ARIMA, SARIMA, DLM, RNN, LSTM, CNN - GRU, SVR and DNN. The process of applying the model will be performed on a historical data, splitting the data to train the model. The trained one will be applied on new data to evaluate the performance accuracy, using statistical evaluation metrics.
+
+
+
+
+\section{Related researches}
+\hspace{0.4cm}This section presents an overview of relevant literature that is technically connected to our study on stock price prediction. We talk about research that offer various methods to the same issue, apply comparable approaches to solve problems that are similar and have conversation about relevant stock price prediction issues.
+
+Sima Siami-Namini and Akbar Siami Namin (2018) \cite{1} discuss the use of ARIMA and LSTM, two popular time series forecasting techniques, and highlights the advantages of each method, with ARIMA being useful for short-term forecasting of stationary data, and LSTM being particularly effective for capturing long-term dependencies and non-linear patterns in the data. To be precise, the research validates the average metric scores of ARIMA and LSTM, which RMSE score of LSTM stands at 64.213 and that of ARIMA is 511.481 respectively. This proves that the reliability of the LSTM-based algorithm for forecasting Financial data is 85 percent on average more advanced compared to ARIMA.
+
+Dev Shah and colleagues \cite{comparednn} conducted a comparative analysis involving two highly promising artificial neural network models: LSTM, RNN and DNN. The focus of their study was on forecasting the daily and weekly trends of the Indian BSE Sensex index. The outcomes revealed that both LSTM and RNN demonstrated superior performance, achieving an accuracy of 60.6 percent, compared to the DNN's accuracy of 52.6 percent for weekly predictions. Notably, the LSTM, RNN excelled over the DNN specifically in terms of weekly forecasts.
+
+Nobre et al. \cite{2} carried out a study that used data collected through a national public health surveillance system in the United States to evaluate and compare the performances of SARIMA and DLM for estimating case occurrence of two notifiable diseases. The comparison uses reported cases of malaria and hepatitis A from January 1980 to June 1995 in the United States. As a result, no modeling approach dominates the other. Marko Laine used DLM to offer a very generic framework to analyse time series data. Many classical time series models can be formulated as DLMs, including ARMA models and standard multiple linear regression models \cite{3}.
+
+Jianguo Zheng and et al. \cite{4} carried out The Stock Index Prediction Based on SVR Model with Bat Optimization Algorithm. This paper uses the bat algorithm to optimize the three parameters in the Gaussian radial basis kernel function support vector regression model and compares the prediction performance with the support vector regression model of the other two types of kernel functions and improves the original bat algorithm.
+
+\section{Materials and method}
+\subsection{Dataset}
+In this research, our goal is to evaluate the accuracy of various
+machine learning models in forecasting stock price.
+To accomplish this, we have employed a diverse set of datasets,
+each of which provides valuable information on historical
+stock prices of three different banks in Vietnam and related factors. The dataset
+was gathered on investing.com websites which contain the data from January $2^{nd}$ 2018 to December $15^{th}$ 2023 which is nearly 6 years. They have 7 attribute
+columns in total:
+\renewcommand{\arraystretch}{1.5} % Adjust the value as needed
+\begin{table}[h]
+\begin{tabular}{|l|p{6cm}|}
+\hline
+Name   & Descriptive                             \\ \hline
+Date   & Date of observation                     \\ \hline
+Price  & Opening price on the given day          \\ \hline
+High   & Highest price on the given day          \\ \hline
+Low    & Lowest price on the given day           \\ \hline
+Close  & Closing price on the given day          \\ \hline
+Volume & Volume of transactions on the given day \\ \hline
+Change & The difference between the closing price of the current period and the closing price of the previous period. \\ \hline
+\end{tabular}
+\caption{Description of Banks Data}
+\end{table}
+\vspace{-5\baselineskip}
+\renewcommand{\arraystretch}{2}
+\subsection{Descriptive Statistics}
+\begin{table}[H]
+\begin{tabular}{lccc}
+\hline
+                   & AGR         & ACB         & VCB           \\ \hline
+Mean               & 8814.045497 & 18120.17    & 68803.80242   \\
+Median             & 6860.1      & 17856       & 71497         \\
+Mode               & 3346.4      & 22000       & 63738         \\
+Standard Error     & 151.2973088 & 161.97      & 415.5708449   \\
+Standard Deviation & 5836.233629 & 6241.51     & 16030.48038   \\
+Sample Variance    & 34061622.98 & 38956435.37 & 256976301.1   \\
+Kurtosis           & -0.178      & -1.62       & -0.939718414  \\
+Skewness           & 0.875622088 & 0.13        & -0.1127852354 \\
+Minimum            & 2165.3      & 8763.1      & 35483         \\
+Maximum            & 27263.3     & 30360       & 106500        \\
+Sum                & 13115299.7  & 26908448    & 102380058     \\
+Count              & 1488        & 1485        & 1488          \\
+Q1                 & 3671.2      & 11667.7     & 54214.5       \\
+Q2                 & 6860.1      & 17856       & 71497         \\
+Q3                 & 12700       & 24200       & 80000         \\ \hline
+\end{tabular}
+\caption{\centering Data descriptive}
+\end{table}
+\subsubsection{AGRIBANK}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.1\linewidth]{agrline.png}
+    \caption{\centering AGR Line chart}
+    \label{fig:enter-label}
+\end{figure}
+\vspace{-2\baselineskip}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.1\linewidth]{agrboxhist.png}
+    \caption{\centering AGR Boxplot and Histogram}
+    \label{fig:enter-label}
+\end{figure}
+ \vspace{-2\baselineskip}
+\subsubsection{ASIA COMMERCIAL BANK}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acbline.png}
+    \caption{\centering ACB Line chart}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{acbboxhist.png}
+    \caption{\centering AGR Boxplot and Histogram}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\subsubsection{VIETCOMBANK}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{vcbline.png}
+    \caption{\centering VCB Line chart}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{vcbboxhist.png}
+    \caption{\centering AGR Boxplot and Histogram}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\subsection{Tool Used}
+\hspace{0.4cm}In this assessment, we employed the Python programming language and worked within the Jupyter Notebook environment. Data processing was carried out using Pandas for efficient handling of data frames. Matplotlib was used for data visualization, in the realm of machine learning and regression modeling, we relied on the Scikit-learn library. This combination of tools and libraries allowed for a comprehensive and effective analysis within the Jupyter Notebook framework.
+
+
+\section{forecasting model}
+\subsection{ARIMA}
+\hspace{0.4cm}ARIMA model or Auto Regressive Intergrated Moving Average model is the hybrid statistics time series model used to predict the value of a historical data type in a period of time. The ARIMA model aims to explain data by using time seriers data on its past value and uses linear regression to make predictions. This model requires a stationary and full data set, the stationarity can be examined using the Augmented Dickey Fuller estimation \cite{arima1}. 
+ARIMA consists of 3 components:
+ \begin{itemize}
+     \item Autoregression (AR(p)): 
+ \end{itemize}
+	\hspace{0.4cm}      A model estimating the future value using its own past values with p represents the number of lag value associated in the equation. AR(p) is presented by: \newline
+ 
+ $y_t=c+\varphi_1y_{t-1}+\ldots+\varphi_py_{t-p}+\varepsilon_t$ \newline
+
+	
+ \begin{itemize}
+     \item Moving Average(MA(q)):
+ \end{itemize}
+\newline 
+\hspace{0.4cm}A model estimating the future value using the error of present value and its past value, with p represents the number of lag value. MA(q) is presented by: \newline
+
+ $y_t=c+\theta_1\varepsilon_{t-1}+\ldots+\theta_q\varepsilon_{t-q}$ \newline
+
+ \begin{itemize}
+     \item Intergration (I(d)): The number of differences order (between $y_t$ and $y_{t-d}$) needed to make the dataset become stationary.
+ \end{itemize}
+ \newline 
+
+\hspace{0.4cm}The complete model’s formula of ARIMA(p, d, q):\newline
+
+$\Delta{^d}y_t=c+\sum_{k=1}^{p}\varphi_k\Delta{^d}y_{t-k}+\sum_{h=1}^{q}\theta_h\varepsilon_{t-h}+\varepsilon_t$ \newline
+
+\newline Where:
+\newline + $\Delta{^d}y_t$: differenced Y value
+\newline + c: Constant
+\newline +	$\varphi$, $\theta$ :coefficient
+\newline +	$y_{t-k}$: value at the past k period
+\newline +	$\varepsilon_{t-h}$: error at the past h period
+\newline +	$\varepsilon_t$: error term
+
+\subsection{SVR}
+\hspace{0.4cm}Support Vector Regression (SVR) is a type of machine learning algorithm used for regression analysis. The goal of SVR is to find a function that approximates the relationship between the input variables and a continuous target variable, while minimizing the prediction error \cite{svr1}. 
+
+SVR uses the same principles as the SVM for classification, with only a few minor differences. However, the main idea is always the same: to minimize error, individualizing the hyperplane which maximizes the margin, keeping in mind that part of the error is tolerated \cite{svr2}. 
+
+
+\textit{Idea:} Find hyperplanes to separate the data points. However, there are many possible hyperplanes, so we need to find the optimal one. 
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Picture1.jpg}
+    \caption {\centering Hyperplanes in 2D and 3D space.}
+    \label{fig:enter-label}
+\end{figure}
+
+
+We have:\newline
+\hspace{0.4cm}+ The distance from H1 to H0 is denoted as d\textsuperscript{-}
+
++ The distance from H1 to H0 is denoted as d\textsuperscript{+}
+
++ m = d-+ d+ is referred to as the margin level.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Picture2.png}
+    \caption{\centering Method to find the optimal hyperplane.}
+    \label{fig:enter-label}
+\end{figure}
+
+The optimal hyperplane we need to select is the one with the maximum margin. The special feature of SVR is that it uses the kernel trick to solve problems \cite{svr3}. Common kernels are: 
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|m{80pt}|m{100pt}|m{35pt}|} \hline 
+         Kernel & Formula & Coefficient \\ \hline 
+         Polynomial & $k(x,z) = (r + \gamma x^Tz)^d$ & $d$: degree \newline $\gamma$ gamma \newline $r$: coef \\ \hline 
+         Radial Basis Function (RBF) & $k(x,z) = \exp(-\gamma\|x-z\|_2^2)$ &  $\gamma > 0$: gamma\newline \newline  \\ \hline 
+         Sigmoid & $k(x,z) = \tanh(\gamma x^Tz + r)$ & $\gamma$: gamma \newline\newline $r$: coef \\ \hline
+    \end{tabular}
+     \caption{SVR's Kernel description}
+\end{table}
+\subsection{LSTM}
+\hspace{0.4cm}A Long Short-Term Memory (LSTM) network is a neural network architecture designed for processing sequential data (Balakumar et al., 2023). The architecture of an LSTM network is based on the concept of a recurrent neural network (RNN), capable of processing sequential data by maintaining a state that is updated at each time step of the sequence \cite{cnngru1&lstm1}.\newline
+A GRU is also a kind of RNN model and a variant of LSTM. However, unlike LSTM which has three gates, GRU has only two gates, i.e., reset gate and update gate \cite{lstm2}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{lstm.png}
+    \caption{\centering LSTM Model}
+    \label{fig:enter-label}
+\end{figure}
+\hspace{0.4cm}$f_t$,$i_t$,$o_t$ Stand for Forget gate, Input gate and Output gate \cite{lstm3}:
+\begin{flushleft}
+
+$f_t$=$\sigma\left(U_fx_t+W_fh_{t-1}{+b}_f\right)$\\
+
+$i_t$=$\sigma\left(U_ix_{t+}W_fh_{t-1}{+b}_i\right)$\\
+
+$o_t$=$\sigma\left(U_ox_t+W_fh_{t-1}b_o\right)$ \\
+
+$\bigm{\widetilde{c}}_t=\tanh\funcapply\left(U_cx_t+W_ch_{t-1}+b_c\right)$\\
+
+$h_t$=$o_ttanh\left(c_t\right)$\\
+\end{flushleft}
+Where:\\
++ $x_t$: Input at time step t.\\
++ $h_t$: Hidden state at time step t.\\
++ $c_t$: Cell state at time step t.\\
++ $i_t$: Input gate activation at time step t.\\
++ $g_t$: Gate activation that determines the cell update.\\
++ $f_t$: Forget gate activation.\\
++ $o_t$: Output gate activation.\\
++ $\sigma$: Sigmoid activation function.\\
++ $\bigodot$: Element-wise multiplication.\\
+
+
+\subsection{Linear Regression}
+\hspace{0.4cm}Mathematically saying, SLR is a method used to estimate the nature of the relationship between 1 independent variable X and 1 dependent variable Y, knowing that these 2 numerical variables are entities in a 1st-degree formula. Multiple Linear Regression has the same concept of SLM, while it estimates how much Y will change when multiple Xs change by a certain amount. With regression, we are trying to predict the Y variable from X using a linear relationship: \cite{sachconcua}\newline
+
+$y=\ B_0+\ B_1X_1+\ B_2X_2+\ldots+\ B_PX_P+e$ 
+\newline
+	\newline Where:
+\newline + $Y$ is the dependent variable
+\newline + $B_0$ is the intercept term
+\newline + $X_1$, $X_p$ are the independent variables
+\newline + $B_1$, $B_p$ are the regression coefficients for the independent variables. 
+
+\begin{flushleft}
+\hspace{0.4cm}In time series evaluation, the X value will be considered as a Y value in previous lags of time.
+\end{flushleft}    
+
+\subsection{SARIMA}
+\hspace{0.4cm}Seasonal Autoregressive Integrated Moving Average, SARIMA or Seasonal ARIMA, is an extension of ARIMA that explicitly supports univariate time series data with a seasonal component. It adds three new hyperparameters to specify the autoregression (AR), differencing (I), and moving average (MA) for the seasonal component of the series, as well as an additional parameter for the period of the seasonality \cite{sarima1}. 
+
+The addition of Seasonality adds robustness to the SARIMA model. It’s represented as:\newline
+
+       \centering SARIMA (p, d, q) (P, D, Q)\textsubscript{m}
+\begin{flushleft}       
+\hspace{0.4cm}Where m is the number of observations per year. We use the uppercase notation for the seasonal parts of the model, and lowercase notation for the non-seasonal parts of the model .
+
+\hspace{0.4cm}Similar to ARIMA, the P, D, Q values for seasonal parts of the model can be deduced from the ACF and PACF plots of the data.\\
+\hspace{0.4cm}In addition to the autoregressive (AR), moving average (MA), and differencing (I) components of ARIMA, SARIMA introduces seasonal AR, seasonal MA, and seasonal I terms to capture the seasonal patterns. The seasonal AR terms represent the relationship between the current observation and its lagged observations at seasonal intervals, while the seasonal MA terms capture the dependence on the lagged residuals at seasonal intervals. The seasonal integration component I accounts for seasonal differencing to remove seasonal trends. SARIMA model offer a flexible framework for capturing complex patterns and dynamics in time series data and can provide valuable insights for decision-making and future predictions \cite{sarima3}. \\
+\end{flushleft}       
+\subsection{DLM}
+
+\begin{flushleft}       
+\hspace{0.4cm}Dynamic Linear Model (DLM) is one of the popular statistic time series model used to predict values in historical data. It combines elements of linear regression and time series modeling to capture the underlying patterns and dynamics in the data.
+\end{flushleft}    
+\begin{flushleft}       
+\hspace{0.4cm}Unlike Linear Regression model, Dynamic Regression model or Dynamic Linear model includes an error term that varies throughout the time. In linear trend analysis, for example, we assume that there is an underlying change in the background mean that stays approximately constant over time. Dynamic regression avoids thíby explicitly allowing temporal variability in the regresison coeficents and by letting some of the system properties to change in time \cite{dlm1}. 
+\end{flushleft}    
+\begin{flushleft}       
+\hspace{0.4cm}The main goal of this model are short-term forecasting, intervention analysis and monitoring \cite{dlm2}. DLM can be seen as a state space model because it can be described by 2 components of a state space equation, in a coefficient matrix context:
+\end{flushleft}  
+
+\begin{flushleft}
+\hspace{0.4cm}Observation equation: an observation equation that defines what is being measured or observed \cite{dlm3}. Observations are often denoted as the dependent variable or respnse variable in the model. the observation equation is presented by:
+\end{flushleft}\newline
+\centering $Y_t=\ {F\prime}_t\theta_t+\ \epsilon_t$ 
+
+\begin{flushleft}
+\hspace{0.4cm}State equation: defines the evolution of the process through time \cite{dlm3}. States are not directly measureable or observable, but they influence the generation of the observed data. the state equation is presented by:
+\end{flushleft}
+\begin{center}
+     $\theta_t=\ G_t\theta_{t-1}+\ \omega_t$
+\end{center}
+\begin{flushleft}
+With t = 1, 2, 3,…., T. \\
+Where:\newline
++ $Y_t$ is the observation at time t\newline
++ $\theta_t = (\theta_{t,1},… \theta_{P,1})'$ is the vector of parameters at time t and of dimension p × 1.\newline
++ ${F'}_t$ is the row vector (dimension 1 × p) of covariates at time t\newline
++ $G_t$ is a matrix of dimension p × p known as evolution or transition matrix.
+\end{flushleft}
+\begin{flushleft}
+\hspace{0.4cm}Usually $F_t$ and $G_t$ are completely specified and $F_t$ =  $F$, $G_t$ = $G$.\newline
++ $\epsilon_t$ is the observation error at time t\newline
++ $\omega_t$ is the evolution error (p × 1 vector).\newline
++ For a Normal DLM, $\epsilon_t ∼ N(0, V_t)$ and ${\omega}_t ∼ N(0, W_t)$.\newline
++ $E_t$ is independent of Es, ωt is independent of ωs for t 6 = s. 
++ $E_0s$ independent of $\omega_0s$.\newline
+\end{flushleft}
+
+\subsection{CNN - GRU}
+\begin{flushleft}
+    
+\hspace{0.4cm}A CNN-GRU model is a neural network architecture that combines Convolutional Neural Networks (CNNs) and Gated Recurrent Units (GRUs) \cite{cnngru1&lstm1}. This hybrid model is often used for tasks that involve sequential data and have a spatial component, such as image captioning, video analysis, and spatiotemporal data processing.\\
+\hspace{0.4cm}By combining CNNs and GRUs, the model can leverage the spatial feature extraction capabilities of CNNs and the sequential modeling capabilities of GRUs. This can be particularly useful in tasks where understanding both spatial relationships and temporal dependencies is crucial.\\
+\begin{itemize}
+    \item CNN model\\
+\end{itemize}
+\hspace{0.4cm}Convolutional Neural Network (CNN) is a neural network architecture widely used in computer vision tasks. CNN is a feed-forward neural network that consists of multiple convolutional, pooling, and fully-connected layers \cite{cnngru1&lstm1}.\\
+\hspace{0.4cm}The main feature of CNN is the ability to capture local features and spatial structures in images and to learn more abstract feature representations \cite{cnngru1&lstm1}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{cnngru1.png}
+    \caption{\centering One-dimension CNN network structure}
+    \label{fig:enter-label}
+\end{figure}
+The formula of convolution:\\
+\end{flushleft}
+\centering$g\left(i\right)=\ \sum_{x=1}^{m}\sum_{y=1}^{n}\sum_{z=1}^{p}{a_{x,y,z}w_{x,y,z}^i+b^i$ \\
+\begin{flushleft}
+$i=1,2,\ldots,q$ \\
+\hspace{0.4cm}Where: \\
++ g(i) is used to represent the i-th feature map \\
++ a is used to represent the input data \\
++ i is used to represent the first convolution kernel\\
++ b represents the bias\\
++ x, y, z represents the three dimensions of the input.\\
+\hspace{0.4cm}After the convolution operation, the activation Li number is usually used to realize the nonlinear transformation, and RELU is used as the activation function in this paper.\\
+\end{flushleft}
+$y\left(i\right)=f\left(g\left(i\right)\right)=\max{\left\{0,g\left(i\right)\right\},\ \ \ i=1,2,\ldots,q}$
+\begin{flushleft}
+
+\hspace{0.4cm}Considering the one-dimensional characteristics of track data, this paper uses a one-dimensional convolutional neural network to process one-dimensional data. The convolution formula is:\\
+\end{flushleft}
+\centering$g\left(i\right)=\ \sum_{x=1}^{m}{a_xw_x^i}+b^i,\ \ \ i=1,2,\ldots,q$ \\
+\begin{flushleft}
+    
+\\ \hspace{0.4cm}The features of the financial time series are extracted in the form of a sliding window with a step size of l. The final result of the CNN module is obtained by flattening layers and fully connecting layers.
+
+\begin{itemize}
+    \item GRU model
+\end{itemize}
+\hspace{0.4cm}Gated Recurrent Unit (GRU) which is a type of Recurrent Neural Network (RNN) architecture used in machine learning and deep learning \cite{cnngru1&lstm1}. GRU similar to long short-term memory (LSTM). Compared with LSTM, GRU has fewer parameters simpler structure, and the training efficiency of the model is higher, so it runs faster on some tasks and is an advanced variant of the LSTM model.\\
+\hspace{0.4cm}GRUs are designed to alleviate the vanishing gradient problem when training long-term sequences. It was introduced as an improvement over traditional RNNs to address the vanishing gradient problem, which can occur when training deep neural networks \cite{cnngru1&lstm1}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{cnngru2.png}
+    \caption{\centering GRU structural unit}
+    \label{fig:enter-label}
+\end{figure}
+
+The formula of the GRU model:\\
+$\mathbit{r}_\mathbit{t}=\ \mathbit{\sigma}(\mathbit{W}_\mathbit{t}\mathbit{x}_\mathbit{t}+\mathbit{U}_\mathbit{t}\mathbit{h}_{\mathbit{t}-\mathbf{1}})$ \\
+
+$\mathbit{z}_\mathbit{t}=\mathbit{\sigma}\left(\mathbit{W}_\mathbit{z}\mathbit{x}_\mathbit{t}+\mathbit{U}_\mathbit{z}\mathbit{h}_{\mathbit{t}-\mathbf{1}}\right)$\\
+
+${\widetilde{\mathbit{h}}}_\mathbit{t}=\mathbit{f}(W_hx_t+U_h(r_t\bigodot h_{t-1})) $\\
+
+$\mathbit{h}_\mathbit{t}=\mathbit{z}_\mathbit{t}\bigodot \widetilde{\mathbit{h}}_\mathbit{t}+(1-z_t)\bigodot h_{t-1}$  \newline
+Where:\\
++ $r_t$: is the reset gate\\
++ $z_t$: is the update gate \\
++ $x_t$: is the input information\\
++ $\sigma$: is the sigmoid activation function\\
++ $h_{t−1}$: is the state of the hidden layer at the previous moment\\
++ $\widetilde{\mathbit{h}}_\mathbit{t}$: is the input $x_t$, and the previous hidden layer\\
++ $f$: is the tanh activation function\\
+
+\end{flushleft}
+\subsection{DNN}
+\begin{flushleft}
+    
+
+\hspace{0.4cm}Deep Forwarding Neural Network (DNN) is one of the popular artificial Neural Network consisting of multiple layers of interconnected artificial neurons, similar to other existed neural network systems. Because of its high-level abstraction capability and capacity to simulate complex nonlinear functions, the model's fitting power is greatly increased. Meanwhile, it is a kind of discriminant model which could be trained through the backpropagation algorithm, by that, the amount of time to perform gradient descend algorithm can be decreased significantly.\\
+\hspace{0.4cm}The architecture of a DNN is a composition of several layers, usually 2 or more, including input layer, output layer and at least 1 hidden layer in between \cite{dnn1}.\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{DNN.png}
+    \caption{\centering The architecture of DNN}
+    \label{fig:enter-label}
+\end{figure}
+
+\hspace{0.4cm}The reason for the name Feed Forward is from the flow of the data. As a Feedforward neural network, the data always starts from the input layer, then moves to the middle hidden layers and ends its journey in the output layer.\\
+\hspace{0.4cm}As a Neural Network-based model, DNN is considered more reliable than traditional statistical model, while it is good at dealing with complicated non-linear relations, complex patterns of value throughout the time. With that, DNN can be trained and used for stock price prediction.\\
+\hspace{0.4cm}DNN’s prediction and decision are performed by applying the activation equations and cross entropy loss equations, as the output of those aforementioned equations are ranged between 0 to 1, which is optimal for decision-making and classification in the network. Throughout the flow of the data, each layer of nodes will perform the cross-entropy loss function to calculate the probability of the output for the next layer, with activation functions utilize the cross-entropy function, deciding which node to activate. This process will be performed from the input to the output. By adding activation functions in the hidden layer, we are able to customize the model for better prediction as it can capture complicated relationship between variables. \\
+\hspace{0.4cm}DNN can be seen as a fundamental for other architectures namely CNN and RNN as they shares the same structures and in/out processes \cite{dnn2}.
+
+\end{flushleft}
+
+\section{Result}
+
+\begin{flushleft}
+\hspace{0.4cm}To have a comparison between models, we come up with 4 accuracy metrics: Root Mean Squared Error \textbf{(RMSE)}, Mean Absolute Error \textbf{(MAE)}, Mean Absolute Percentage Error \textbf{(MAPE)}, Mean Squared Logarithmic Error \textbf{(MSLE)}. The required score of each model should be as low as possible to be considered well-fit.
+
+\begin{flushleft}
+    MSLE is a metric commonly used to evaluate the performance of regression models, especially in the context of predicting positive quantities. It measures the mean of the squared logarithmic differences between the natural logarithm of the predicted values and the natural logarithm of the actual values.
+\end{flushleft}
+\centering $MSLE=\frac{1}{n}{\sum_{i=1}^{n}{\ (\log\funcapply(1+\ }{\hat{y}}_i)-\log\funcapply(1+y_i))}^2\ $\\
+\begin{flushleft}
+ \hspace{0.4cm}Where:\\
+
+     + n: amount\ of\ examining\ sample\\
+     + $y_i$: actual\ dependent\ value\\
+     + ${\hat{y}}_i$: predicted\ dependent\ value\\
+
+ 
+\hspace{0.4cm}The addition of 1 inside the logarithmic function helps avoid issues when the actual value or the predicted value is zero. MSLE is particularly useful when the scale of the target variable is large, and you want to penalize underestimates and overestimates equally.    \\
+
+\hspace{0.4cm}In the evaluation process, eight different models underwent assessment for time series analysis with training-validation-testing splits of 7:3, 8:2, and 9:1. RMSE, MAE, MAPE, and MSLE scores were utilized to evaluate the performance of each model.\\
+ \end{flushleft}
+\end{flushleft}
+
+\renewcommand{\arraystretch}{0.5}
+
+\begin{table}[H]
+
+\begin{tabular}{|cccccc|}
+\hline
+\rowcolor[HTML]{F7C8B7} 
+\multicolumn{6}{|c|}{\cellcolor[HTML]{F7C8B7}AGR} \\ \hline
+\multicolumn{1}{|c|}{Model} &
+  \multicolumn{1}{c|}{Ratio} &
+  \multicolumn{1}{c|}{RMSE} &
+  \multicolumn{1}{c|}{MAPE} &
+  \multicolumn{1}{c|}{MAE} &
+  \multicolumn{1}{c|}{MSLE} \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7240.0770} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}66.7253} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}6679.9425} &
+  0.2966 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}6482.5517} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}63.2796} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5870.9313} &
+  0.2794 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}LR}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}1652.4660} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8.1323} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}1254.6752} &
+  0.0112 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9457.1448} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}88.0649} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}8681.4454} &
+  \cellcolor[HTML]{FFFFFF}0.4370 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}5097.7512} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}27.8076} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3938.9246} &
+  \cellcolor[HTML]{FFFFFF}0.1911 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{ARIMA}} &
+  \multicolumn{1}{c|}{9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3353.1553} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}17.7313} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2871.2026} &
+  \cellcolor[HTML]{FFFFFF}0.0531 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{333333} }} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 7:3}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 277.6558}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1.6345}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 191.1054}} &
+  {\color[HTML]{E80F0F} 0.0005} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{333333} }} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 8:2}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 255.0448}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1.5536}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 175.6352}} &
+  {\color[HTML]{E80F0F} 0.0005} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{333333} SVR}}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 9:1}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 304.6898}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1.4269}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 217.4016}} &
+  {\color[HTML]{E80F0F} 0.0004} \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}6227.1139} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}57.1270} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}5926.2521} &
+  \cellcolor[HTML]{FFFFFF}0.2262 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4481.6883} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}24.3486} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3451.2265} &
+  \cellcolor[HTML]{FFFFFF}0.1352 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{DLM}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3452.8159} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}18.6868} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3007.7295} &
+  \cellcolor[HTML]{FFFFFF}0.0573 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9021.5232} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}83.7663} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8210.8742} &
+  0.4104 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5231.0463} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}28.5630} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}4047.9469} &
+  0.2051 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}SARIMA}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}3297.4955} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}17.4489} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2825.0527} &
+  0.0511 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}665.9} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3.469} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}550.393} &
+  \cellcolor[HTML]{FFFFFF}0.043 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}426.219} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2.592} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}313.147} &
+  \cellcolor[HTML]{FFFFFF}0.035 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{LSTM}} &
+  \multicolumn{1}{c|}{9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}551.657} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3.621} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}405.626} &
+  \cellcolor[HTML]{FFFFFF}0.048 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}434.346} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2.887} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}325.398} &
+  0.037 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}501.21} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2.996} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}363.752} &
+  0.04 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}CNN-GRU}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}586.403} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2.744} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}432.57} &
+  0.037 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}592.338} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3.866} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}433.692} &
+  \cellcolor[HTML]{FFFFFF}0.051 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}459.059} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2.746} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}341.22} &
+  \cellcolor[HTML]{FFFFFF}0.035 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{DNN}} &
+  \multicolumn{1}{c|}{9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}587.819} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2.803} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}440.802} &
+  \cellcolor[HTML]{FFFFFF}0.037 \\ \hline
+\end{tabular}
+\caption{\centering Metric score of Agribank.}
+\end{table}
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+\begin{table}[H]
+\begin{tabular}{|cccccc|}
+\hline
+\rowcolor[HTML]{F7C8B7} 
+\multicolumn{6}{|c|}{\cellcolor[HTML]{F7C8B7}ACB} \\ \hline
+\multicolumn{1}{|c|}{Model} &
+  \multicolumn{1}{c|}{Ratio} &
+  \multicolumn{1}{c|}{RMSE} &
+  \multicolumn{1}{c|}{MAPE} &
+  \multicolumn{1}{c|}{MAE} &
+  \multicolumn{1}{c|}{MSLE} \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5133.4669} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}19.4613} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}4390.4827} &
+  0.0407 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5653.0171} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}23.4994} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5268.1593} &
+  0.0498 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}LR}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5458.4550} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}24.0107} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5336.4887} &
+  0.0480 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3166.7870} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}12.2442} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2738.0836} &
+  \cellcolor[HTML]{FFFFFF}0.0176 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}5591.7909} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}23.2427} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}5398.8895} &
+  \cellcolor[HTML]{FFFFFF}0.0751 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{ARIMA}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2727.8510} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}11.7861} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2608.2788} &
+  \cellcolor[HTML]{FFFFFF}0.0135 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 7:3}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 289.6297}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 0.8239}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 188.2907}} &
+  {\color[HTML]{E80F0F} 0.0002} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 8:2}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 253.6612}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 0.7649}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 172.6522}} &
+  {\color[HTML]{E80F0F} 0.0001} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}SVR}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 9:1}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 155.2636}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 0.5643}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 126.4427}} &
+  {\color[HTML]{E80F0F} 0.0000} \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4713.9874} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}18.7739} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4254.8513} &
+  \cellcolor[HTML]{FFFFFF}0.0353 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}8012.2596} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}33.6245} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}7782.6253} &
+  \cellcolor[HTML]{FFFFFF}0.1812 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{DLM}} &
+  \multicolumn{1}{c|}{9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4477.5506} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}19.2601} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4271.3831} &
+  \cellcolor[HTML]{FFFFFF}0.0335 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}3167.2483} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}12.2499} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2739.4921} &
+  0.0176 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5888.3294} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}24.5540} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}5699.7432} &
+  0.0848 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}SARIMA}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2724.8786} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}11.7731} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2605.8200} &
+  0.0135 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}641.523} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2.165} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}490.812} &
+  \cellcolor[HTML]{FFFFFF}0.028 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}426.765} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.176} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}273.712} &
+  \cellcolor[HTML]{FFFFFF}0.018 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{LSTM}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}322.728} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.095} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}244.772} &
+  \cellcolor[HTML]{FFFFFF}0.014 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}487.865} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}1.447} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}329.159} &
+  0.022 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}471.238} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}1.394} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}322.102} &
+  0.02 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}CNN-GRU}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}344.275} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}1.169} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}262.63} &
+  0.015 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}651.589} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2.187} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}497.009} &
+  \cellcolor[HTML]{FFFFFF}0.029 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}555.604} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.87} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}434.262} &
+  \cellcolor[HTML]{FFFFFF}0.024 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{DNN}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}310.524} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}1.011} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}226.905} &
+  \cellcolor[HTML]{FFFFFF}0.014 \\ \hline
+\end{tabular}
+\caption{\centering Metric score of ACB.}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{|cccccc|}
+\hline
+\rowcolor[HTML]{F7C8B7} 
+\multicolumn{6}{|c|}{\cellcolor[HTML]{F7C8B7}VCB} \\ \hline
+\multicolumn{1}{|c|}{Model} &
+  \multicolumn{1}{c|}{Ratio} &
+  \multicolumn{1}{c|}{RMSE} &
+  \multicolumn{1}{c|}{MAPE} &
+  \multicolumn{1}{c|}{MAE} &
+  \multicolumn{1}{c|}{MSLE} \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}10122.6651} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}10.5568} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8480.4115} &
+  0.0143 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8109.1836} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8.0418} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}6744.8786} &
+  0.0091 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}LR}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7655.5981} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7.2197} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}6682.8366} &
+  0.0067 \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9070.2985} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}8.4877} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}7339.8408} &
+  \cellcolor[HTML]{FFFFFF}0.0112 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}24248.9365} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}25.2337} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}22793.8350} &
+  \cellcolor[HTML]{FFFFFF}0.0968 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{ARIMA}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9052.0105} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9.3236} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}8336.2511} &
+  \cellcolor[HTML]{FFFFFF}0.0095 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{333333} }} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 7:3}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 8070.4706}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 4.1239}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 3917.8932}} &
+  {\color[HTML]{000000} 0.0084} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{333333} }} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 8:2}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 9730.2716}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 5.6722}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 5466.1142}} &
+  {\color[HTML]{000000} 0.0122} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{333333} SVR}}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 9:1}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 8158.5863}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 4.1734}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{000000} 4211.3528}} &
+  {\color[HTML]{000000} 0.0076} \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4243.4385} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}4.2354} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}3411.5891} &
+  \cellcolor[HTML]{FFFFFF}0.0027 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}20212.9827} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}20.8154} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}18743.4497} &
+  \cellcolor[HTML]{FFFFFF}0.0640 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{DLM}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}12837.2093} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}12.8170} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}11322.8607} &
+  \cellcolor[HTML]{FFFFFF}0.0183 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9060.2076} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8.4706} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7324.9866} &
+  0.0112 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}24228.4744} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}25.2188} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}22774.7282} &
+  0.0967 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}SARIMA}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7401.7719} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}7.6447} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}6893.4966} &
+  0.0064 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFFFFF}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2208.41} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2.017} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1739.732} &
+  0.026 \\ \cline{2-6} 
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFFFFF}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{E80F0F} 8:2}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{E80F0F} 1690.774}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{E80F0F} 1.24}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{E80F0F} 1116.099}} &
+  {\color[HTML]{E80F0F} 0.019} \\ \cline{2-6} 
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{FFFFFF}LSTM}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2009.951} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.262} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1136.177} &
+  0.021 \\ \hline
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 7:3}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1648.322}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1.351}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1146.292}} &
+  {\color[HTML]{E80F0F} 0.019} \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{E6EFFD}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2998.752} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2.563} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}2373.89} &
+  0.032 \\ \cline{2-6} 
+\rowcolor[HTML]{E6EFFD} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{\cellcolor[HTML]{E6EFFD}CNN-GRU}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 9:1}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 2007.575}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1.467}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{E6EFFD}{\color[HTML]{E80F0F} 1334.665}} &
+  {\color[HTML]{E80F0F} 0.021} \\ \hline
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{7:3} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2169.734} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.994} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1703.956} &
+  \cellcolor[HTML]{FFFFFF}0.025 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}8:2} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1763.879} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.29} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1151.42} &
+  \cellcolor[HTML]{FFFFFF}0.019 \\ \cline{2-6} 
+\multicolumn{1}{|c|}{\multirow{-3}{*}{DNN}} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}9:1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}2055.299} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1.339} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFFFFF}1213.795} &
+  \cellcolor[HTML]{FFFFFF}0.022 \\ \hline
+\end{tabular}
+\caption{\centering Metric score of Vietcombank.}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{svr73agr.png}
+    \caption{\centering SVR result of AGR for predicting next 30 days (Ratio 7:3)}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{svr82agrr.png}
+    \caption{\centering SVR result of AGR for predicting next 30 days (Ratio 8:2)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{svr91agr.png}
+    \caption{\centering SVR result of AGR for predicting next 30 days (Ratio 9:1)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{svr73acb.png}
+    \caption{\centering SVR result of ACB for predicting next 30 days (Ratio 7:3)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{svr82acb.png}
+    \caption{\centering SVR result of ACB for predicting next 30 days (Ratio 8:2)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{svr91acb.png}
+    \caption{\centering SVR result of ACB for predicting next 30 days (Ratio 9:1)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth, height=2.5in]{lstm82vcb.png}
+    \caption{\centering LSTM result of VCB for predicting next 30 days (Ratio 8:2)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{cnngru73vcb.png}
+    \caption{\centering CNN-GRU result of VCB for predicting next 30 days (Ratio 7:3)}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{cnngru91vcb.png}
+    \caption{\centering CNN-GRU result of VCB for predicting next 30 days (Ratio 9:1)}
+    \label{fig:enter-label}
+\end{figure}
+\section{Conclusion}
+\begin{flushleft}
+\hspace{0.4cm}The above table summarizes the accuracy scores of all 8 aforementioned models for 3 data sets (ACB, VCB, AGR), conducted in 3 sets of train-test ratios (7:3, 8:2 and 9:1). By comparing all models in each ratio, we can conclude that SVR, CNN-GRU and DNN prove their outstanding performances above the rest. The whole study underlines the performance of each statistics model alongside machine learning algorithm on predicting the values in historical data, notably in stock price forecasting for business decisions. Individuals have demonstrated their pros and cons throughout experiments, testing on various ratios, customizing and fitting to 3 chosen data sets, leading to the fact that SVR, CNN-GRU and DNN have the potential to be used for building advanced models for stock price forecasting.
+\end{flushleft}
+
+\section{Future development}
+\begin{flushleft}
+\hspace{0.4cm}As the current examination may encounter flaws (outliers in data, unexpected fluctuations, especially under the influence of the Covid epidemic,…), subsequent investigations could be conducted to validate the results of this study and assess the performance of the other models on different stock price prediction tasks. In the future, more team efforts will be established into research and enhancements of specifically Machine Learning-based models for more accurate financial data predictions. Our upcoming goal is to combine various Neural Network methods to increase the accuracy of the model. To be precise, we will try to merge CNN-GRU with DNN or LSTM, as Neural Network provides the ability to add or remove layers to create a better prediction model. Moreover, we will also adjust the activation equations (adding SOFTMAX for greater probability, ReLU for node activation,…) in the layers to let the machine decide better, with better and optimal outputs for business decision making in finance. To improve the training model's applicability, the team will also experiment more with various models and data sets, particularly with banks that deal with significant exchange rate changes brought on by unforeseen events like politics, inflation,…
+\end{flushleft}
+
+\section{Acknowledgment}
+\begin{flushleft}
+\hspace{0.4cm}We extend our heartfelt gratitude to Assoc. Prof. Dr.Nguyen Dinh Thuan for his invaluable contributions to our learning journey. His lectures have not only imparted knowledge but have also ignited enthusiasm within our team, serving as a guiding force for the successful completion of our project. We are truly appreciative of his dedication.\\
+
+\hspace{0.4cm}A special acknowledgment goes to Mr. Nguyen Minh Nhut and Ms. Nguyen Thi Viet Huong, whose consistent support has been a pillar for our team throughout the course. His encouragement and assistance have played a significant role in our project's development.\\
+
+\hspace{0.4cm}In expressing our appreciation to Assoc. Prof. Dr.Nguyen Dinh Thuan, we would like to highlight our gratitude for the trust and permission granted to carry out our project. This opportunity has been instrumental in our growth and development.\\
+
+\hspace{0.4cm}Lastly, but certainly not least, we express deep thanks to Assoc. Prof. Dr.Nguyen Dinh Thuan, Mr. Nguyen Minh Nhut and Ms. Nguyen Thi Viet Huong for their unwavering commitment. Their tireless efforts in guiding and motivating the team have been pivotal in steering us through challenges and encouraging continuous progress.\\
+\end{flushleft}
+\bibliographystyle{unsrt}
+\bibliography{ref}
+
+
+
+
+\EOD
+
+\end{document}
