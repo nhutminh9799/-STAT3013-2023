@@ -1,0 +1,736 @@
+\documentclass{ieeeojies}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{changepage}
+\usepackage{float}
+\usepackage{bibentry}
+\usepackage{caption}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+% Redefine \subsubsection to make both the number and text bold
+\makeatletter
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                   {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                   {1.5ex \@plus .2ex}%
+                                   {\normalfont\normalsize\bfseries}}
+\makeatother
+
+
+\title{ Predictive Modeling of Vietnamese Bank Stock Prices: Integrating Machine Learning and Statistical Approaches for Enhanced Forecasting}
+\author{\uppercase{Nguyen Toan Khang}\authorrefmark{1},
+\uppercase{Ly Tuan Khoa\authorrefmark{2}, and Luu Minh Chu}\authorrefmark{3}} 
+
+\address[1]{University of Information Technology Ho Chi Minh City, Vietnam(e-mail: 21522195@gm.uit.edu.vn)}
+\address[2]{University of Information Technology Ho Chi Minh City, Vietnam(e-mail: 21522225@gm.uit.edu.vn)}
+\address[3]{University of Information Technology Ho Chi Minh City, Vietnam(e-mail: 21520652@gm.uit.edu.vn)}
+
+\markboth
+{Author: Nguyen Toan Khang - Ly Tuan Khoa - Luu Minh Chu}
+{Author: Nguyen Toan Khang - Ly Tuan Khoa - Luu Minh Chu}
+
+
+\begin{abstract}
+In response to the growing interest of young investors in Vietnamese bank stocks, this research focuses on optimizing profits through advanced forecasting techniques. Leveraging a comprehensive suite of statistical and machine learning algorithms, including Autoregressive Integrated Moving Average (ARIMA), Support Vector Regression (SVR), Long Short-Term Memory (LSTM), Linear Regression (LN), Seasonal Autoregressive Integrated Moving Average with Exogenous Variables (SARIMAX), Extreme Gradient Boosting (XGBoost), Graph Neural Networks (GNN) and Fully convolutional network (FCN), the study aims to predict time series stock prices. The analysis utilizes evaluation metrics, including Root Mean Square Error (RMSE), Mean Absolute Percentage Error (MAPE\%), and Mean Absolute Error (MAE\%), Mean Squared Logarithmic Error (MSLE) to rigorously assess the performance of each forecasting model across diverse datasets. The research outcomes highlight the distinctive strengths of ARIMA, SVR, LSTM, Linear Regression, SARIMAX, XGBoost, and GNN, emphasizing their efficacy in achieving superior forecasting accuracy in the context of Vietnamese bank stock prices.
+\end{abstract}
+\begin{document}
+\begin{keywords}
+Stock Price Forecasting, Time Series Analysis, Machine Learning, Statistical Models, Autoregressive Integrated Moving Average, ARIMA, Support Vector Regression, SVR, Long Short-Term Memory, LSTM, Linear Regression, LN, Autoregressive Integrated Moving Average with Exogenous Variables, SARIMAX, Extreme Gradient Boosting, XGBoost, Graph Neural Networks, GNN, Fully convolutional network, FCN, Evaluation Metrics, Root Mean Square Error, RMSE, Mean Absolute Percentage Error, MAPE, Mean Absolute Error, MAE, Mean Squared Logarithmic Error, MSLE, Vietnamese Bank Stocks, Financial Forecasting, Investment Strategies, Financial Market Trends.
+\end{keywords}
+
+\titlepgskip=-15pt
+
+\maketitle
+
+\section{\centering Introduction}
+\label{sec:introduction}
+\hspace{0.3cm} In recent years, the securities investment landscape has seen a surge in interest, especially among young investors. This demographic shift has spurred research efforts to help investors optimize profits in dynamic financial markets. Our focus is on Vietnamese bank stocks, a sector gaining attention for lucrative opportunities.
+
+Online trading platforms and social networks have democratized market access, attracting a new generation of investors. Vietnamese bank stocks, crucial to the nation's economy, are particularly appealing. Our study addresses profit maximization through advanced forecasting techniques.
+
+We employ a holistic approach, using statistical and machine learning algorithms like ARIMA, SVR, LSTM, Linear Regression, SARIMAX, XGBoost, GNN and FCN to predict time series stock prices. Rigorous evaluation using metrics like RMSE, MAPE\%, and MAE\%, MSLE assesses model efficacy.
+
+Our findings highlight strengths of forecasting models, emphasizing ARIMA, SVR, LSTM, Linear Regression, SARIMAX, XGBoost, GNN and FCN. By delineating their unique contributions, our study offers insights for investors and analysts, enhancing forecasting accuracy in the Vietnamese bank stock market. This contributes to the broader discussion on financial forecasting, investment strategies, and identifying trends in the intricate financial market landscape.
+
+\section{\centering RELATED WORKS}
+\subsection{\textbf{Linear Regression (LN)}}
+ \hspace{0.3cm}Sonali Antad and et al. \cite{antad2023stock} from the Vishwakarma Institute of Technology, Pune, present a project focused on developing a stock price prediction website using the linear regression algorithm as a machine learning tool. Recognizing the importance of accurate stock market forecasting, the authors introduce the "J3 predictor" website, designed to predict stock prices over various durations. The methodology involves implementing linear regression in Python, specifically utilizing the scikit-learn library and the Django framework. The authors emphasize the simplicity and effectiveness of the linear regression model, achieving an accuracy rate between 75\% to 85\%. The future scope of the project suggests improvements in prediction accuracy, integration of natural language processing, forecasting the impact of non-financial events, and examining the influence of climate change on the stock market. In conclusion, the paper underscores the significance of accurate stock market predictions, demonstrating the efficacy of linear regression in forecasting, and proposes avenues for future research in the field. 
+
+\subsection{\textbf{Autoregressive Integrated Moving Average (ARIMA)}}
+\hspace{0.3cm}
+Adem Üntez et al.\cite{babu2015exchange}focused on the analysis and prediction of exchange rates using algorithms such as ARIMA, Neural Network, and Fuzzy Neuron. The ARIMA model was employed to forecast exchange rates and compared with two other algorithms. The results revealed that while ARIMA provided good outcomes, it did not outperform the neural network in exchange rate prediction. According to the evaluations, Fuzzy Neuron demonstrated the best forecasting performance, achieving an accuracy rate of 95.39\% using the RMSE metric and 7.89\% using the MAPE metric.The author introduced these findings and applied algorithms in the context of exchange rate prediction. The study highlights the superiority of Fuzzy Neuron in terms of forecasting accuracy.
+
+\subsection{\textbf{Support Vector Regression (SVR)}}
+\hspace{0.3cm}Guo et al.\cite{article2} presents a hybrid model for enhancing energy consumption prediction in the context of energy management systems. The research integrates feature selection (FS) algorithms, including stepwise, Lars, and Boruta, with machine learning methods, specifically Random Forest (RF), Gradient Boosting Regressor (GBR), and Support Vector Regression (SVR). The paper focuses on parameter optimization for each model and employs four evaluation indicators (MAE, MSE, RMSE, and R2) to assess their performance.
+
+The key findings reveal that the SVR-Boruta hybrid model outperforms others, achieving an accuracy of 90.585\%. SVR consistently demonstrates superior performance compared to GBR and RF, and Boruta is identified as the most effective FS algorithm. 
+
+\subsection{\textbf{Long Short-Term Memory (LSTM)}}
+\hspace{0.3cm}Rahmi Yunida and et al.\cite{article1} from Lambung Mangkurat University explores the effectiveness of Long Short-Term Memory (LSTM) and Bidirectional LSTM (Bi-LSTM) in identifying natural disaster reports from social media. Using word2vec for text-to-vector transformation, the combination of word2vec and Bi-LSTM achieved an improved accuracy of 72.17\% compared to LSTM's 70.67\%. The study suggests the potential for further enhancement by adjusting parameters, offering avenues for future research to explore improved model performance.
+
+\subsection{\textbf{Graph Neural Networks (GNN)}}
+\hspace{0.3cm}Zexi Huang and et al\cite{unknown} study about link prediction, a crucial task in various graph applications, focusing on the limitations of Graph Neural Networks (GNNs) in handling class imbalance. The authors introduce Gelato, a novel framework that combines topological and attribute information for link prediction without relying on GNNs. Gelato applies topology-centric graph learning and Autocovariance, a topological heuristic, achieving superior accuracy, faster training, and fewer parameters compared to state-of-the-art GNNs. The paper emphasizes the importance of unbiased testing and proposes the use of the N-pair loss for link prediction training. The contributions include scrutinizing link prediction evaluation and training, proposing an effective alternative to GNNs, and introducing unbiased training with the N-pair loss.
+
+\subsection{\textbf{Extreme Gradient Boosting (XGBoost)}}
+\hspace{0.3cm}Qingwen Jin et al.\cite{article3} established predictive models using the Best Track TC dataset to anticipate Tropical Cyclone (TC) intensity in the Western North Pacific (WNP). Employing the XGBOOST model, we conducted predictions for 6, 12, 18, and 24-hour intensities across six scenarios. The feature set was meticulously designed through brainstorming and CLIPER methods. Testing the model on recent TCs (Hato, Rammasum, Mujiage, and Hagupit) produced compelling outcomes:
+
+The XGBOOST model's accuracy significantly improved by integrating climatology and persistence factors, environmental factors, brainstorm features, intensity category, and TC month. Across all six scenarios, the model achieved a mean absolute error (MAE) < 4.50 m/s, correlation coefficient (CC) > 0.89, and normalized root mean square error (NRMSE) < 10.00\%. Model C2 exhibited the highest accuracy among scenarios A (A1 and A2), B (B1 and B2), and C (C1 and C2).
+
+Evaluation in the Western North Pacific (WNP) using NRMSE, MAE, and CC parameters revealed MAEs of 1.61, 2.44, 3.10, and 3.70 m/s for 6, 12, 18, and 24-hour lead times, respectively. Corresponding CCs were 0.99, 0.97, 0.95, and 0.93, while NRMSEs were 3.09\%, 4.72\%, 6.00\%, and 7.18\%. MAE and NRMSE increased with lead time, accompanied by a gradual decrease in CC. Noteworthy is the superior performance of the XGBOOST model compared to traditional Back-Propagation Neural Network (BPNN) models for the same predictors and independent prediction samples.
+
+\subsection{\textbf{Seasonal Autoregressive Integrated Moving Average with Exogenous Variables(SARIMAX)}}
+\hspace{0.3cm}Singh et al. (2020) developed a new hybrid model of discrete wavelet decomposition and autoregressive integrated moving average (ARIMA) models to forecast the casualties cases of COVID-19. The study focused on predicting death cases in five countries majorly afflicted by COVID-19, namely France, Italy, Spain, the United Kingdom, and the United States. The Wavelet-ARIMA model was used to divide the input dataset into component series, which were separately subjected to an appropriate econometric model. The model produced significantly better outcomes for Italy, Spain, and the United Kingdom, and a 50\% better outcome for France and the United States. The hybrid ARIMA model reduced errors by nearly 50\% compared to the ARIMA model. The authors proposed the model as a better prediction model for everyday recovered cases, confirmed cases, and deceased cases in India. They used an optimized SARIMAX model and tuned the hyperparameters using grid search cross-validation to obtain better and optimal results. The study aimed to inspire and assist policymakers in making decisions based on expected outcomes and to track the spread of COVID-19. The proposed approach was designed to be useful in disease control methods and in tracking the spread of COVID-19. The study also discussed the motivation behind predicting the COVID-19 cases and the potential impact of the research on public healthcare and government decision-making. 
+
+\subsection{\textbf{Fully convolutional network (FCN)}}
+Liu et al.\cite{article8} present a study on fault detection using Fully Convolutional Networks (FCN) in 3D seismic images. The FCN model is applied to automatically interpret faults in an oil field in eastern China. The study area contains complicated faults, and the FCN model is shown to outperform automatic and common fault detection methods. The FCN model provides higher sensitivity and continuity with less noise, making it highly efficient for fault prediction compared to seismic attributes. The paper provides a detailed description of the FCN architecture, training process, and practical application results.
+
+\section{\centering Materials}
+\subsection{Datasets}
+\hspace{0.3cm}This study revolves around stock price predictions within the banking sector, specifically focusing on datasets from key financial institutions in Vietnam. The datasets are sourced from Vietnam Joint Stock Commercial Bank for Industry and Trade (CTG), Sai Gon Thuong Tin Commercial Joint Stock Bank (STB), and Joint Stock Commercial Bank for Investment and Development of Vietnam (BID). The data covers the period from January 27, 2014, to December 21, 2023, and exhibits consistent characteristics across the selected banks.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|p{6cm}|}
+        \hline
+        \textbf{Attribute} & \textbf{Describe} \\
+        \hline
+        Date & Stock trading day \\
+        \hline
+        Price & The closing/final price of the stock at a certain time \\
+        \hline
+        Open & The initial opening/price of the stock at a certain time \\
+        \hline
+        High & Highest opening price \\
+        \hline
+        Low & Lowest price of opening price \\
+        \hline
+        Vol. & Number of transactions during the day \\
+        \hline
+        Change \% & Percentage change between the current day's closing price compared to the previous day. \\
+        \hline
+    \end{tabular}
+    \caption{\centering \textit{Describe attribute of datasets.}}
+    \label{tab:my_label}
+\end{table}
+\vspace{-0.5\baselineskip}
+The objective of this article is to predict closing prices; therefore, only descriptive statistical information pertaining to the "Price" column will be provided.
+\vspace{-1\baselineskip}
+\subsubsection{\textbf{BID}}
+\paragraph{Detail statistical}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+        \multicolumn{2}{|c|}{\textbf{BID Historical Dataset}} \\ \hline
+        Count & 2471 \\ \hline
+        Mean & 25249.1279 \\ \hline
+        Standard deviation & 11801.6556 \\ \hline
+        Max & 49100 \\ \hline
+        Min & 8006.4 \\ \hline
+        25\% & 12786.55 \\ \hline
+        50\% & 26021.7 \\ \hline
+        75\% & 34268.9 \\ \hline
+        Mode & 8952 \\ \hline
+        Median & 1234 \\ \hline
+        Variance & 693745.4286 \\ \hline
+        Covariance & 13927906.05 \\ \hline
+        Kurtosis & -1.2561 \\ \hline
+        Skewness & 0.14488 \\ \hline
+    \end{tabular}
+    \caption{\centering \textit{Detail statistical of BID.}}
+\end{table}
+\vspace{-0.3cm}
+\paragraph{Visualization}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/410720650_742797517713209_3731835905726010208_n.png}
+    \caption{\centering \textit{Visualization price attribute of BID.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsubsection{\textbf{CTG}}
+\paragraph{Detail statistical}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+        \multicolumn{2}{|c|}{\textbf{CTG Historical Dataset}} \\ \hline
+        Count & 2471 \\ \hline
+        Mean & 19293.5084 \\ \hline
+        Standard deviation & 7937.9193 \\ \hline
+        Max & 41141.3 \\ \hline
+        Min & 9002.9 \\ \hline
+        25\% & 12758 \\ \hline
+        50\% & 16291.2 \\ \hline
+        75\% & 27000 \\ \hline
+        Mode & 9594.3 \\ \hline
+        Median & 16291.2 \\ \hline
+        Variance & 63010563.3744 \\ \hline
+        Covariance & 63010563.3744 \\ \hline
+        Kurtosis & -0.8716 \\ \hline
+        Skewness & 0.6265 \\ \hline
+    \end{tabular}
+    \caption{\centering \textit{Detail statistical of CTG.}}
+\end{table}
+\vspace{-0.3cm}
+\paragraph{Visualization}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/411871770_759903352826899_7805772301363917828_n.png}
+    \caption{\centering \textit{Visualization price attribute of CTG.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsubsection{\textbf{STB}}
+\paragraph{Detail statistical}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+        \multicolumn{2}{|c|}{\textbf{STB Historical Dataset}} \\ \hline
+        Count & 2471 \\ \hline
+        Mean & 16500.7811 \\ \hline
+        Standard deviation & 7009.3544 \\ \hline
+        Max & 35850 \\ \hline
+        Min & 7300 \\ \hline
+        25\% & 11400 \\ \hline
+        50\% & 13769 \\ \hline
+        75\% & 21125 \\ \hline
+        Mode & 11200 \\ \hline
+        Median & 13769 \\ \hline
+        Variance & 49131049.5257 \\ \hline
+        Covariance & 49131049.5257 \\ \hline
+        Kurtosis & -0.8716 \\ \hline
+        Skewness & -0.2501 \\ \hline
+    \end{tabular}
+    \caption{\centering \textit{Detail statistical of STB.}}
+\end{table}
+
+\paragraph{Visualization}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/411155900_755538856602632_5255862697553185813_n.png}
+    \caption{\centering \textit{Visualization price attribute of STB.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsection{Tools}
+\subsubsection{Python}
+\hspace{0.3cm}In this reasearch, Python is employed as the programming language, and the accompanying platform is the Jupyter notebook. Additionally, we make use of Python's inherent libraries such as Pandas for manipulating data in the structure of data frames. Matplotlib is utilized for creating visual representations of data through plots. Numpy is applied to facilitate mathematical and matrix operations throughout the experiment. Lastly, the Scikit-learn library provides support for machine learning and regression models.
+
+\subsection{Dataset Split Ratio}
+\hspace{0.3cm}\hspace{0.3cm}In our research on time series data, we decided split the data into training and testing sets using the 9:1, 8:2 and 7:3 ratio. The most common ratio used for splitting time series data is the 7:3 ratio, where 70\% of the data is used for training, 20\% for testing. This ratio is
+commonly used because it provides enough data for the model to learn from, while also allowing for a separate testing set to validate its performance. 
+
+In certain instances, a 7:3 train-test split ratio is a frequent choice in machine learning for various reasons. It offers a significant volume of data for training intricate models while maintaining a sufficient dataset for assessing generalization performance. This equilibrium proves beneficial in scenarios where computational resources are constrained, aligning with established practices in the machine learning community. The ratio plays a crucial role in balancing bias and variance, facilitating effective model training and evaluation. Ultimately, the selection of the ratio hinges on the specific attributes of the dataset and the objectives of the analysis.
+
+\section{\centering METHODS}
+\subsection{Linear Regression}
+\hspace{0.3cm}Linear regression analysis is used to predict a variable's value based on another variable's value. The variable that needs to be predicted is called the dependent variable. The variable that is used to predict the other variable’s value is called the independent variable. This statistical method finds an equation that best predicts the y variables as a linear function of the x variables\cite{ibmAboutLinear}. 
+
+The formula for a univariate linear regression\cite{corporatefinanceinstituteMultipleLinear}:
+$$
+Y=\beta_0+\beta_1 X_1+\varepsilon
+$$
+
+The formula for a multiple linear regression:
+$$
+Y=\beta_0+\beta_1 X_1+\beta_2 X_2+\cdots+\beta_k X_k+\varepsilon
+$$
+
+Where:
+ \begin{itemize}
+     \item $Y$ is the dependent variable.
+     \item $X_1, \ldots X_k$ are the independent (explanatory) variables.
+     \item $\boldsymbol{\beta_0}$ is the intercept term.
+     \item $\boldsymbol{\beta_1}, \ldots \boldsymbol{\beta_k}$ are the regression coefficients for the independent variables.
+     \item $\boldsymbol{\varepsilon}$ is the error term.
+ \end{itemize}
+
+\subsection{ARIMA}
+\hspace{0.3cm}ARIMA is a popular time series analysis and forecasting method. It combines three components: Autoregressive (AR) Component (p), Moving Average (MA) Component (q), Integrated (I) Component (d). The AR component captures the relationship between the current observation and its previous observations. It involves regressing the current value on its own past values. The MA involves modeling the relationship between the current observation and a residual error from a moving average model applied to lagged observations. The I represents the difference of the time series to make it stationary.
+The ARIMA model can be simply written as:
+$$
+\begin{gathered}
+y_t=c+\phi_1 y_{t-1}+\phi_2 y_{t-2}+\cdots+\phi_p y_{t-p}+\theta_1 \epsilon_{t-1} \\
++\theta_2 \epsilon_{t-2}+\cdots+\theta_q \epsilon_{t-q}
+\end{gathered}
+$$
+Where:
+ \begin{itemize}
+     \item $y_t$ is the observed data at time  $\mathrm{t}$
+     \item $\mathrm{c}$ is a constant
+     \item $\phi_1, \phi_p$ are the Auto Regressive (AR) coefficients corresponding to order $\mathrm{p}$
+     \item $\theta_1, \theta_q$ are the  Moving Average (MA) coefficients corresponding to order $\mathrm{q}$
+     \item $\epsilon_{t-1}, \epsilon_{t-q}$ 
+    are the previous errors used to calculate the current value
+ \end{itemize}
+
+\subsection{SVR}
+\hspace{0.3cm}
+Support Vector Regression, as its name implies, is a regression algorithm capable of handling both linear and non-linear regression tasks. This approach is rooted in the principles of the Support Vector Machine (SVM). Unlike SVM, which functions as a classifier for predicting discrete categorical labels, SVR serves as a regressor designed specifically for predicting continuous ordered variables.
+
+SVR kernel function:
+\begin{table}[h]
+    \centering
+    \vspace{-0.2cm}
+    \begin{tabular}{|c|c|}
+    \hline \textbf{Kernel} & \textbf{Function} \\
+    \hline Polynomial & $\left(x_i * x_j+1\right)^d$ \\
+    \hline RBF & $\operatorname{Exp}\left(-\mathrm{y}\left|x_i-x_j\right|\right)$ \\
+    \hline Sigmoid & $\tanh \left(y x^T z+r\right)$ \\ 
+    \hline
+    \end{tabular}
+    \caption{\centering \textit{SVM Kernel.}}
+    \vspace{-1cm}
+\end{table}
+
+\subsection{LSTM}
+\hspace{0.3cm}The LSTM (Long Short-Term Memory) model is a specialized neural network architecture extensively employed in the realm of time series processing. First introduced by Hochreiter and Schmidhuber in 1997, it has since evolved into one of the pivotal models within the domain of deep learning for time series data.
+
+This model addresses a significant challenge encountered in traditional Recurrent Neural Networks (RNNs), namely the problem of long-term information loss. In conventional RNNs, information propagation is constrained by a limited number of neurons, and it tends to diminish as the sequence length increases. LSTM mitigates this issue by incorporating a memory cell and gates, which regulate the flow of information during the processing of time series data.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/1_L69bb4OirTPvwRvkDLVFng.png}
+    \caption{\centering \textit{Architectural of the LSTM model.}}
+    \label{fig:enter-label}
+\end{figure}
+
+The rationale behind employing the LSTM model in time series processing lies in its proficiency in managing long-term dependencies. Through the incorporation of a memory cell and gates, LSTM exhibits the capability to preserve crucial information from previous time steps during the training phase. This functionality empowers the model to generate more accurate predictions, particularly for extended and intricate sequences. The specific formula governing the LSTM's operations is as follows\cite{article7}:
+\begin{itemize}
+    \item \textbf{Input gate (i):} $i_t=\sigma\left(W_i \cdot\left[h_{t-1}, x_t\right]+b_i\right)$\\
+    \item \textbf{Forget gate (f):} $f_t=\sigma\left(W_f \cdot\left[h_{t-1}, x_t\right]+b_f\right)$\\
+    \item \textbf{Output gate (o):} $o_t=\sigma\left(W_o \cdot\left[h_{t-1}, x_t\right]+b_o\right)$\\
+    \item \textbf{Memory cell (C):} $\tilde{C}_t=\tanh \left(W_C \cdot\left[h_{t-1}, x_t\right]+b_C\right)$
+     $C_t=f_t \cdot C_{t-1}+i_t \cdot \tilde{C}_t$
+    \item \textbf{Hidden state (h):} $h_t=o_t \cdot \tanh \left(C_t\right)$
+\end{itemize}
+
+Where:
+\begin{itemize}
+    \item $x_t$ is the input at time t.
+    \item $h_{t-1}$ is the hidden state from the previous layer.
+    \item $i_t, f_t, o_t$ are the values of the gates at time $\mathrm{t}$.
+    \item $C_t$ is the memory cell state at time $\mathrm{t}$.
+    \item $h_t$ is the hidden state at time t.
+    \item $W_i, W_f, W_o, W_C$ are weight matrices.
+    \item $b_i, b_f, b_o, b_c$ are bias vectors.
+\end{itemize}
+
+The formulas describe how the gates and states of an LSTM
+are computed based on the current input and the previous state.
+
+This process allows the LSTM to process and store crucial
+information from the past and influence the prediction
+outcomes.
+
+\subsection{GNN}
+\hspace{0.3cm}Graph Neural Networks (GNNs) represent a specialized category of neural networks designed to operate on data organized in a graph structure. They draw inspiration from Convolutional Neural Networks (CNNs) and graph embedding techniques. GNNs excel in tasks related to predicting nodes, edges, and other graph-centric objectives.
+
+Just as CNNs find application in image classification by processing the grid of pixels, GNNs are employed for analyzing graph structures, where each node corresponds to a specific entity. In the context of text classification, Recurrent Neural Networks (RNNs) are commonly used. Similarly, GNNs can be applied to graph structures representing sentences, where each word serves as a node.
+
+The introduction of GNNs became necessary when Convolutional Neural Networks faced challenges in achieving optimal results, particularly when dealing with graphs of arbitrary size and intricate structures. GNNs emerged as a powerful solution to address these complexities and enhance the performance of neural networks in graph-based tasks\cite{datacampComprehensiveIntroduction}.
+The propagation rule for GNN can be generalized as:
+$$
+\mathbf{h}_v^{(t)}=\sum_{u \in N(v)} f\left(\mathbf{x}_v, \mathbf{x}^{\mathbf{e}}{ }_{(v, u)}, \mathbf{x}_u, \mathbf{h}_u^{(t-1)}\right) \quad \cite{mediumGraphNeural }
+$$
+Where:\\
+\begin{itemize}
+    \item $\mathbf{h}_v^{(t)}$: The hidden feature of node v at time t\\
+    \item {u \in N(v)}$: Neighbor of node v\\
+    \item $\mathbf{x}_v$: The feature vector of the node v\\
+    \item $\mathbf{x}^{\mathbf{e}}{ }_{(v, u)}$: The edge feature of vector of the edge(v,u)
+    \item $\mathbf{x}_u$: The feature vector for the neighboring node u\\
+    \item $\mathbf{h}_u^{(t-1)}$: The hiden feature vector of node u in last time step
+\end{itemize}
+
+
+\subsection{XGBoost}
+\hspace{0.3cm}XGBoost, which stands for Extreme Gradient Boosting, is a scalable, distributed gradient-boosted decision tree (GBDT) machine learning library. It provides parallel tree boosting and is the leading machine-learning library for regression, classification, and ranking problems\cite{nvidiaWhatXGBoost}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.4 \textwidth]{figs/412138570_765431435411680_2142705204067342256_n.png}
+    \caption{\centering \textit{Architectural of the XGBoost model.}}
+    \label{fig:enter-label}
+\end{figure}
+Regularized Learning Objective\cite{geeksforgeeksXGBoostGeeksforGeeks}:
+$$
+\Omega(f)=\gamma T+\frac{1}{2} \lambda\|w\|^2
+$$
+
+With:
+\begin{itemize}
+    \item $\gamma$ and $\lambda$ is the hyperparameters
+    \item $T$ is the number of tree node
+    \item $w$ is the vector of node
+\end{itemize}
+Objective Function: Training Loss + Regularization
+$$
+L(\phi)=\sum_{i=n}^n l(y i-\hat{y} i)+\sum_{k=1}^k \Omega\left(f_k\right)
+$$
+
+Taylor expansion:
+$$
+L^{(t)}=\sum_{i=1}^l\left[l\left(y_i, \hat{y}_i^{(t-1)}\right)+g_i f_t\left(x_i\right)+\frac{1}{2} h_i f_t^2\left(x_i\right)\right]+\Omega\left(f_t\right)
+$$
+
+\subsection{SARIMAX}
+\hspace{0.3cm}SARIMAX(Seasonal Auto-Regressive Integrated Moving Average with eXogenous factors) is an updated version of the ARIMA model\cite{article6}. 
+Two different types of orders must be provided in the SARIMAX models parameter. We refer to this order as a seasonal order in which we are required to submit four integers. The first one is comparable to the ARIMAX model (p, d, and q), and the other is to indicate the influence of seasonality. The model can be described in these components: SARIMAX(p,d,q)(P,D,Q,s).
+Where
+\begin{itemize}
+    \item $(p, d, q)$ is the same with variable of ARIMA
+    \item P: Seasonal AutoRegressive (SAR). The parameter P represents the seasonal autoregressive component (the number of lags in previous season)
+    \item D: Seasonal Differencing. parameter D represents the seasonal differencing.
+    \item Q: Seasonal Moving Average (SMA). The parameter Q represents the seasonal moving average component. $\mathrm{s}$ : The parameter $\mathrm{s}$ denotes the length of the seasonal period in the time series
+\end{itemize}
+
+\subsection{FCN}
+\hspace{0.3cm}The Fully Convolutional Network (FCN) is a deep learning architecture designed for end-to-end classification tasks on univariate time series data. It leverages the power of convolutional neural networks (CNN) to capture hierarchical features directly from the input time series.
+
+The fundamental building block of FCN is the convolutional layer. The formula for calculating the output of a convolutional layer is as follows:
+$$
+\operatorname{conv}\left(i, \quad\left(\sum_{u=0}^{M-1} \sum_{v=0}^{M-1} w_{u, v} x_{i+u, j+v}+b\right)\right. \quad \cite{article8}
+$$
+Where:
+ \begin{itemize}
+     \item $\operatorname{conv}(i, j)$ is the convolution result, also known as the feature map;
+     \item $\mathrm{M}$ indicates the size of the convolution kernel $(\mathrm{M} \times$ M);
+     \item $w_{u, v}$ is the weight of the convolution kernel in line $u$ and column $v$;
+     \item $x_{i+u, j+v}$ is the input;
+     \item $\quad b$ is the bias;
+ \end{itemize}
+ $$
+ 
+\vspace{-1cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.4 \textwidth]{figs/414410123_784914113468746_5351951344941210051_n.png}
+    \caption{\centering \textit{Architectural of the FCN model.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\hspace{0.3cm}A convolutional block is comprised of a sequence of M consecutive convolutional layers, followed by p pooling layers. In the architecture of a convolutional network, N such convolutional blocks can be sequentially stacked. This stacking is then succeeded by q fully convolutional layers and s deconvolutional layers.
+
+\section{\centering RESULT}
+\subsection{Discussion}
+During the training of the prediction models, we decided to split the data into training and test sets using a ratio of 9:1, 8:2 and 7:3 and employ four primary metrics after prediction: Root Mean Squared Error (RMSE), Mean Absolute Percentage Error (MAPE), and Mean Absolute Error (MAE), Mean Squared Logarithmic Error(MSLE) and we decided split the data into training and testing sets using the 9:1, 8:2 and 7:3 ratio  to assess their accuracy and performance on the test dataset.
+
+MSLE, or Mean Squared Logarithmic Error, measures the average logarithmic difference between the actual and predicted values. It calculates the mean of the squared logarithmic differences between the natural logarithm of the actual and predicted values. This metric is particularly useful when the predictions span a wide range of magnitudes.
+
+$$
+\begin{gathered}
+    L(y, \hat{y})=\frac{1}{N} \sum_{i=0}^N\left(\log \left(y_i+1\right)-\log \left(\hat{y}_i+1\right)\right)^2 \quad \cite{haque2023quasi}
+\end{gathered}
+$$
+where:
+ \begin{itemize}
+     \item $\left\{y_i\right\}$ is the actual observations time series.
+     \item $\left\{\hat{y}_i\right\}$ is the estimated or forecasted time series.
+     \item $\mathrm{N}$ is the number of data points.
+ \end{itemize}
+The purpose of the 1 in $\log _e(1+y)$ is to avoid issues when $y$ is equal to 0 . Using $\log _e(1+y)$ helps prevent problems associated with taking the logarithm of 0 . When $y$ is $0, \log _e(1+y)$ becomes $\log _e(1)$, which is 0 . This avoids undefined results when calculating the logarithm of 0 .
+Considering the outcomes of the assessments provided below, it is evident that each dataset requires its own model along with an optimal division of data. In order to achieve the highest predictive performance, we will choose the top three models, each with a distinct scaling ratio tailored to the specific characteristics of the three datasets.
+\subsubsection{RMSE, MAPE, MAE, MSLE based models comparisons BID dataset}
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\rowcolor[HTML]{FAE0C7} 
+{\color[HTML]{000000} \textbf{Model}}                                                                                                   & {\color[HTML]{000000} \textbf{Ratio}} & {\color[HTML]{000000} \textbf{RMSE}} & {\color[HTML]{000000} \textbf{MAPE}} & {\color[HTML]{000000} \textbf{MAE}} & {\color[HTML]{000000} \textbf{MLSE}} \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 3575.566}      & {\color[HTML]{000000} 7.104}         & {\color[HTML]{000000} 3188.989}     & {\color[HTML]{000000} 0.007}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 4381.346}      & {\color[HTML]{000000} 9.037}         & {\color[HTML]{000000} 3639.019}     & {\color[HTML]{000000} 0.012}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Linear\\   Regression\end{tabular}}}} & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 8930.071}      & {\color[HTML]{000000} 25.2312}       & {\color[HTML]{000000} 7894.75}      & {\color[HTML]{000000} 0.1123}        \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 5675.077}      & {\color[HTML]{000000} 11.584}        & {\color[HTML]{000000} 5223.077}     & {\color[HTML]{000000} 0.018}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 7542.693}      & {\color[HTML]{000000} 15.081}        & {\color[HTML]{000000} 6516.397}     & {\color[HTML]{000000} 0.036}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{ARIMA}}}                                                         & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 5219.372}      & {\color[HTML]{000000} 13.4006}       & {\color[HTML]{000000} 4237.515}     & {\color[HTML]{000000} 0.0307}        \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 1328.794}      & {\color[HTML]{000000} 2.142}         & {\color[HTML]{000000} 977.36}       & {\color[HTML]{000000} 0.001}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 5711.188}      & {\color[HTML]{000000} 8.967}         & {\color[HTML]{000000} 4025.042}     & {\color[HTML]{000000} 0.019}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{SVR}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 5131.343}      & {\color[HTML]{000000} 6.859}         & {\color[HTML]{000000} 3048.904}     & {\color[HTML]{000000} 0.016}         \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 996.081}       & {\color[HTML]{000000} 1.809}         & {\color[HTML]{000000} 796.857}      & {\color[HTML]{000000} 0.022}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 922.978}       & {\color[HTML]{000000} 1.755}         & {\color[HTML]{000000} 691.624}      & {\color[HTML]{000000} 0.024}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{LSTM}}}                                                          & {\color[HTML]{FE0000} 7:3}            & {\color[HTML]{FE0000} 770.444}       & {\color[HTML]{FE0000} 1.936}         & {\color[HTML]{FE0000} 578.555}      & {\color[HTML]{FE0000} 0.026}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 820.214}       & {\color[HTML]{000000} 1.321}         & {\color[HTML]{000000} 579.959}      & {\color[HTML]{000000} 0.019}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 937.627}       & {\color[HTML]{000000} 1.71}          & {\color[HTML]{000000} 682.262}      & {\color[HTML]{000000} 0.024}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{GNN}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 863.872}       & {\color[HTML]{000000} 1.637}         & {\color[HTML]{000000} 623.492}      & {\color[HTML]{000000} 0.023}         \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 3150.056}      & {\color[HTML]{000000} 5.716}         & {\color[HTML]{000000} 2533.101}     & {\color[HTML]{000000} 0.005}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 6222.381}      & {\color[HTML]{000000} 12.569}        & {\color[HTML]{000000} 5226.414}     & {\color[HTML]{000000} 0.025}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{XGBoost}}}                                                       & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 5586.812}      & {\color[HTML]{000000} 14.5}          & {\color[HTML]{000000} 4577.745}     & {\color[HTML]{000000} 0.036}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{FE0000} 9:1}            & {\color[HTML]{FE0000} 700.007}       & {\color[HTML]{FE0000} 1.0775}        & {\color[HTML]{FE0000} 476.721}      & {\color[HTML]{FE0000} 0.0003}        \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{FE0000} 8:2}            & {\color[HTML]{FE0000} 861.796}       & {\color[HTML]{FE0000} 1.408}         & {\color[HTML]{FE0000} 566.194}      & {\color[HTML]{FE0000} 0.0005}        \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{SARIMAX}}}                                                       & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 794.685}       & {\color[HTML]{000000} 1.3797}        & {\color[HTML]{000000} 529.181}      & {\color[HTML]{000000} 0.00045}       \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 3901.956}      & {\color[HTML]{000000} 8.172}         & {\color[HTML]{000000} 3631.392}     & {\color[HTML]{000000} 0.093}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 3515.799}      & {\color[HTML]{000000} 6.948}         & {\color[HTML]{000000} 2957.433}     & {\color[HTML]{000000} 0.085}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{FCN}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 2303.135}      & {\color[HTML]{000000} 5.885}         & {\color[HTML]{000000} 1816.375}     & {\color[HTML]{000000} 0.075}         \\ \hline
+\end{tabular}
+\caption{\centering \textit{Metric score of BID data.}}
+\end{table}
+With the BID dataset, we have the best predictive models based on each ratio respectively: SARIMAX (9 : 1), SARIMAX (8 : 2), LSTM (7 : 3)
+
+\subsubsection{RMSE, MAPE, MAE, MSLE based models comparisons CTG dataset}
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\rowcolor[HTML]{FAE0C7} 
+{\color[HTML]{000000} \textbf{Model}}                                                                                                   & {\color[HTML]{000000} \textbf{Ratio}} & {\color[HTML]{000000} \textbf{RMSE}} & {\color[HTML]{000000} \textbf{MAPE}} & {\color[HTML]{000000} \textbf{MAE}} & {\color[HTML]{000000} \textbf{MLSE}} \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 1853.464}      & {\color[HTML]{000000} 5.117}         & {\color[HTML]{000000} 1464.145}     & {\color[HTML]{000000} 0.003982}      \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 3501.878}      & {\color[HTML]{000000} 8.7571}        & {\color[HTML]{000000} 2503.493}     & {\color[HTML]{000000} 0.0149}        \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Linear\\   Regression\end{tabular}}}} & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 8930.071}      & {\color[HTML]{000000} 25.2312}       & {\color[HTML]{000000} 7894.75}      & {\color[HTML]{000000} 0.1123}        \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 2208.096}      & {\color[HTML]{000000} 5.9831}        & {\color[HTML]{000000} 1805.127}     & {\color[HTML]{000000} 0.0057}        \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 5987.446}      & {\color[HTML]{000000} 19.7287}       & {\color[HTML]{000000} 5310.095}     & {\color[HTML]{000000} 0.0407}        \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{ARIMA}}}                                                         & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 5219.372}      & {\color[HTML]{000000} 13.4006}       & {\color[HTML]{000000} 4237.515}     & {\color[HTML]{000000} 0.0307}        \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{FE0000} 9:1}            & {\color[HTML]{FE0000} 300.253}       & {\color[HTML]{FE0000} 0.7812}        & {\color[HTML]{FE0000} 228.209}      & {\color[HTML]{FE0000} 0.0001}        \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{FE0000} 8:2}            & {\color[HTML]{FE0000} 387.701}       & {\color[HTML]{FE0000} 0.9903}        & {\color[HTML]{FE0000} 276.6902}     & {\color[HTML]{FE0000} 0.0002}        \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{SVR}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 9110.259}      & {\color[HTML]{000000} 20.4597}       & {\color[HTML]{000000} 6688.987}     & {\color[HTML]{000000} 0.1212}        \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 493.787}       & {\color[HTML]{000000} 1.174}         & {\color[HTML]{000000} 345.004}      & {\color[HTML]{000000} 0.017}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 967.919}       & {\color[HTML]{000000} 1.851}         & {\color[HTML]{000000} 725.68}       & {\color[HTML]{000000} 0.025}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{LSTM}}}                                                          & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 770.444}       & {\color[HTML]{000000} 1.936}         & {\color[HTML]{000000} 578.555}      & {\color[HTML]{000000} 0.026}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 504.488}       & {\color[HTML]{000000} 1.232}         & {\color[HTML]{000000} 361.82}       & {\color[HTML]{000000} 0.017}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 653.52}        & {\color[HTML]{000000} 1.723}         & {\color[HTML]{000000} 478.435}      & {\color[HTML]{000000} 0.024}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{GNN}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 680.315}       & {\color[HTML]{000000} 1.685}         & {\color[HTML]{000000} 493.915}      & {\color[HTML]{000000} 0.024}         \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 2237.022}      & {\color[HTML]{000000} 6.046}         & {\color[HTML]{000000} 1767.626}     & {\color[HTML]{000000} 0.006}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 3807.334}      & {\color[HTML]{000000} 10.252}        & {\color[HTML]{000000} 2917.726}     & {\color[HTML]{000000} 0.019}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{XGBoost}}}                                                       & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 5586.812}      & {\color[HTML]{000000} 14.5}          & {\color[HTML]{000000} 4577.745}     & {\color[HTML]{000000} 0.036}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 465.467}       & {\color[HTML]{000000} 1.128}         & {\color[HTML]{000000} 333.603}      & {\color[HTML]{000000} 0.00025}       \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 559.668}       & {\color[HTML]{000000} 1.323}         & {\color[HTML]{000000} 373.279}      & {\color[HTML]{000000} 0.000431}      \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{SARIMAX}}}                                                       & {\color[HTML]{FE0000} 7:3}            & {\color[HTML]{FE0000} 581.798}       & {\color[HTML]{FE0000} 1.317}         & {\color[HTML]{FE0000} 389.267}      & {\color[HTML]{FE0000} 0.000416}      \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 1062.219}      & {\color[HTML]{000000} 2.933}         & {\color[HTML]{000000} 843.677}      & {\color[HTML]{000000} 0.038}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 1249.009}      & {\color[HTML]{000000} 3.631}         & {\color[HTML]{000000} 993.409}      & {\color[HTML]{000000} 0.047}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{FCN}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 2303.135}      & {\color[HTML]{000000} 5.885}         & {\color[HTML]{000000} 1816.375}     & {\color[HTML]{000000} 0.075}         \\ \hline
+\end{tabular}
+\caption{\centering \textit{Metric score of CTG data.}}
+\end{table}
+With the CTG dataset, we have the best predictive models based on each ratio respectively: SVR (9 : 1), SVR (8 : 2), SARIMAX (7 : 3)
+\subsubsection{RMSE, MAPE, MAE, MSLE based models comparisons STB dataset}
+\vspace{-0.3cm}
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\rowcolor[HTML]{FAE0C7} 
+{\color[HTML]{000000} \textbf{Model}}                                                                                                   & {\color[HTML]{000000} \textbf{Ratio}} & {\color[HTML]{000000} \textbf{RMSE}} & {\color[HTML]{000000} \textbf{MAPE}} & {\color[HTML]{000000} \textbf{MAE}} & {\color[HTML]{000000} \textbf{MLSE}} \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 6725.425}      & {\color[HTML]{000000} 21.994}        & {\color[HTML]{000000} 6304.856}     & {\color[HTML]{000000} 0.06998}       \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 9468.872}      & {\color[HTML]{000000} 29.869}        & {\color[HTML]{000000} 8416.653}     & {\color[HTML]{000000} 0.162}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Linear\\   Regression\end{tabular}}}} & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 16467.08}      & {\color[HTML]{000000} 58.825}        & {\color[HTML]{000000} 15769.97}     & {\color[HTML]{000000} 0.865}         \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 5094.63}       & {\color[HTML]{000000} 15.184}        & {\color[HTML]{000000} 4433.826}     & {\color[HTML]{000000} 0.0364}        \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 6007.599}      & {\color[HTML]{000000} 21.576}        & {\color[HTML]{000000} 4784.109}     & {\color[HTML]{000000} 0.059}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{ARIMA}}}                                                         & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 14478.12}      & {\color[HTML]{000000} 48.944}        & {\color[HTML]{000000} 13430.23}     & {\color[HTML]{000000} 0.562}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{FE0000} 9:1}            & {\color[HTML]{FE0000} 377.578}       & {\color[HTML]{FE0000} 1.10002}       & {\color[HTML]{FE0000} 304.433}      & {\color[HTML]{FE0000} 0.000189}      \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 1782.579}      & {\color[HTML]{000000} 2.8871}        & {\color[HTML]{000000} 857.119}      & {\color[HTML]{000000} 0.0035}        \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{SVR}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 850.426}       & {\color[HTML]{000000} 2.695}         & {\color[HTML]{000000} 692.848}      & {\color[HTML]{000000} 0.034}         \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 1069.909}      & {\color[HTML]{000000} 2.99}          & {\color[HTML]{000000} 803.518}      & {\color[HTML]{000000} 0.038}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{FE0000} 8:2}            & {\color[HTML]{FE0000} 595.21}        & {\color[HTML]{FE0000} 1.614}         & {\color[HTML]{FE0000} 456.363}      & {\color[HTML]{FE0000} 0.021}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{LSTM}}}                                                          & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 850.426}       & {\color[HTML]{000000} 2.695}         & {\color[HTML]{000000} 692.848}      & {\color[HTML]{000000} 0.034}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 615.577}       & {\color[HTML]{000000} 1.753}         & {\color[HTML]{000000} 488.211}      & {\color[HTML]{000000} 0.022}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 685.262}       & {\color[HTML]{000000} 2.079}         & {\color[HTML]{000000} 520.726}      & {\color[HTML]{000000} 0.028}         \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{GNN}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 683.155}       & {\color[HTML]{000000} 2.077}         & {\color[HTML]{000000} 521.56}       & {\color[HTML]{000000} 0.028}         \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 3479.951}      & {\color[HTML]{000000} 10.592}        & {\color[HTML]{000000} 2825.942}     & {\color[HTML]{000000} 0.015}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 5866.458}      & {\color[HTML]{000000} 19.021}        & {\color[HTML]{000000} 4678.072}     & {\color[HTML]{000000} 0.058}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{XGBoost}}}                                                       & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 11284.01}      & {\color[HTML]{000000} 37.169}        & {\color[HTML]{000000} 10289.47}     & {\color[HTML]{000000} 0.269}         \\ \hline
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 538.432}       & {\color[HTML]{000000} 1.322}         & {\color[HTML]{000000} 372.267}      & {\color[HTML]{000000} 0.000375}      \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 596.0098}      & {\color[HTML]{000000} 1.6055}        & {\color[HTML]{000000} 410.628}      & {\color[HTML]{000000} 0.00059}       \\ \cline{2-6} 
+\rowcolor[HTML]{FFB6AF} 
+\multirow{-3}{*}{\cellcolor[HTML]{FFB6AF}{\color[HTML]{000000} \textbf{SARIMAX}}}                                                       & {\color[HTML]{FE0000} 7:3}            & {\color[HTML]{FE0000} 607.485}       & {\color[HTML]{FE0000} 1.657}         & {\color[HTML]{FE0000} 423.144}      & {\color[HTML]{FE0000} 0.0006}        \\ \hline
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 9:1}            & {\color[HTML]{000000} 1643.017}      & {\color[HTML]{000000} 4.746}         & {\color[HTML]{000000} 1387.132}     & {\color[HTML]{000000} 0.057}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\cellcolor[HTML]{FBC193}{\color[HTML]{000000} }                                                                                         & {\color[HTML]{000000} 8:2}            & {\color[HTML]{000000} 2375.49}       & {\color[HTML]{000000} 6.943}         & {\color[HTML]{000000} 1558.836}     & {\color[HTML]{000000} 0.103}         \\ \cline{2-6} 
+\rowcolor[HTML]{FBC193} 
+\multirow{-3}{*}{\cellcolor[HTML]{FBC193}{\color[HTML]{000000} \textbf{FCN}}}                                                           & {\color[HTML]{000000} 7:3}            & {\color[HTML]{000000} 4153.258}      & {\color[HTML]{000000} 14.068}        & {\color[HTML]{000000} 3832.248}     & {\color[HTML]{000000} 0.161}         \\ \hline
+\end{tabular}
+\caption{\centering \textit{Metric score of STB data.}}
+\end{table}
+\vspace{-0.5cm}
+With the STB dataset, we have the best predictive models based on each ratio respectively: SVR (9 : 1), LSTM (8 : 2), SARIMAX (7 : 3)
+\subsection{Visualization}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/bidSARIMAX91.png}
+    \caption{\centering \textit{Result of SARIMAX (9 : 1) on BID data.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/bidSARIMAX82.png}
+    \caption{\centering \textit{Result of SARIMAX (8 : 2) on BID data.}}
+    \label{fig:enter-label}
+\end{figure}
+\vspace{-0.8cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/bidLSTM73.png}
+    \caption{\centering \textit{Result of LSTM (7 : 3) on BID data.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/ctgSVR91.png}
+    \caption{\centering \textit{Result of SVR (9 : 1) on CTG data.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/ctgSVR82.png}
+    \caption{\centering \textit{Result of SVR (8 : 2) on CTG data .}}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/ctgSARIMAX73.png}
+    \caption{\centering \textit{Result of SARIMAX (7 : 3) on CTG data.}}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/stbSVR91.png}
+    \caption{\centering \textit{Result of SVR (9 : 1) on STB data.}}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/stbLSTM82.png}
+    \caption{\centering \textit{Result of LSTM (8 : 2) on STB data.}}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5 \textwidth]{figs/stbSARIMAX73.png}
+    \caption{\centering \textit{Result of SARIMAX (7 : 3) on STB data.}}
+    \label{fig:enter-label}
+\end{figure}
+\section{\centering Conclusion}
+\subsection{\textbf{Overall Conclusion}}
+\hspace{0.3cm}The provided table presents accuracy scores for eight models across three datasets (BID stock price, CTG stock price, STB stock price) under three different train-test ratios (7:3, 8:2, and 9:1). Four metrics, namely RMSE, MAPE, MAE, and MSLE, are utilized to assess the model accuracy. The study's findings indicate that among the eight models evaluated (Linear Regression, ARIMA, SARIMAX, GNN, LSTM, SVR, XGBoost, and FCN), SVR, LSTM, and SARIMAX were the most effective in predicting the future prices of BID, CTG, and STB stocks within the resulting time series. This underscores the importance of exploring diverse modeling approaches in financial analysis. Furthermore, the study suggests the potential usefulness of LSTM, SVR, and SARIMAX models for forecasting future stock prices.
+
+The research underscores the significance of considering a range of modeling techniques in financial analysis. It also highlights the potential efficacy of employing LSTM, SVR, and SARIMAX models for forecasting future stock prices. To validate these findings and assess the performance of other models across various stock price prediction tasks, further research could be conducted.
+
+\subsection{\textbf{Challenges Encountered}}
+\hspace{0.3cm}In the pursuit of our research project titled "Predictive Modeling of Vietnamese Real Estate Trends: A Fusion of Data Analytics and Econometric Approaches for Enhanced Forecasting" we grappled with distinctive challenges that necessitated thorough consideration:
+\begin{itemize}
+    \item \textbf{Complexity in data processing:}
+ Real estate data is intricate and diverse, necessitating the use of precise data processing techniques to ensure the feasibility and accuracy of prediction models.
+    \item \textbf{Building robust prediction models:}
+ Constructing real estate prediction models is a complex task that demands in-depth knowledge of the field. Critical decisions, such as algorithm selection, data preprocessing methods, and determining essential variables for the models, were encountered.
+    \item \textbf{Evaluating model effectiveness:}
+ Various algorithmic and statistical indicators were utilized to assess the performance of the prediction models. However, the results indicated that the accuracy of the models was still unsatisfactory.
+\end{itemize}
+
+\subsection{\textbf{Future Intention}}
+\begin{itemize}
+    \item \textbf{Enhancing data selection and processing skills:}
+We will continue researching and implementing state-of-the-art methods for data selection and processing to ensure that our prediction models operate with feasible and accurate input data.
+    \item \textbf{Employing advanced prediction models:}
+Exploration of advanced techniques such as Deep Learning and Reinforcement Learning to develop more sophisticated and accurate prediction models, with the potential to enhance overall effectiveness in predicting real estate trends.
+    \item \textbf{Strengthening model evaluation methods:}
+Investigation and adoption of the latest and widely accepted indicators within the field of real estate trend prediction, such as Mean Absolute Scaled Error (MASE), Mean Absolute Error Percentage (MAPE), and Symmetric Mean Absolute Percentage Error (SMAPE).
+\end{itemize}
+
+By implementing these solutions, we are confident that we can significantly improve the accuracy and effectiveness of our real trend prediction models in the future.
+\appendices
+\vspace{-0.5cm}
+\section*{\centering Acknowledgment}
+\hspace{0.3cm}I extend my sincere appreciation to \textbf{Assoc. Prof. Dr. Nguyen Dinh Thuan}, \textbf{Mr. Nguyen Minh Nhut}, and \textbf{Ms. Nguyen Thi Viet Huong} for their unwavering support and guidance during this course. Their rich insights and mentorship have been pivotal in steering our team to the successful completion of our project.
+
+\textbf{Assoc. Prof. Dr. Nguyen Dinh Thuan}'s profound knowledge and thoughtful advice have been a guiding light throughout our academic endeavors. His commitment to fostering excellence has left an indelible mark on our intellectual growth, inspiring a deeper understanding of the subject matter.
+
+I express my gratitude to \textbf{Mr. Nguyen Minh Nhut} for his exceptional teaching and continuous encouragement. His innovative approach to pedagogy has ignited our curiosity, making the learning process engaging and rewarding. His steadfast support has been a driving force behind our academic achievements.
+
+A special acknowledgment goes to \textbf{Ms. Nguyen Thi Viet Huong} for her unwavering commitment to our learning journey. Her dedication to creating a positive educational environment has enhanced our experience, fostering both academic success and personal growth.
+
+I want to particularly highlight the outstanding contributions of \textbf{Mr. Nhut} and \textbf{Ms. Nguyen Thi Viet Huong} to our project. Their expertise and collaborative spirit were instrumental in overcoming challenges and achieving project success. Their commitment to excellence has set a high standard for our team.
+
+Reflecting on this educational journey, I am deeply grateful for the privilege of learning under the guidance of such esteemed educators and mentors. \textbf{Assoc. Prof. Dr. Nguyen Dinh Thuan, Mr. Nguyen Minh Nhut, and Ms. Nguyen Thi Viet Huong} have played a transformative role in shaping my academic and personal development.
+
+Once again, thank you to these exceptional individuals for their outstanding contributions to our education. I consider myself fortunate to have had the opportunity to learn and grow under their mentorship.
+\EOD
+\bibliographystyle{unsrt}
+\bibliography{reference}
+
+\end{document}
