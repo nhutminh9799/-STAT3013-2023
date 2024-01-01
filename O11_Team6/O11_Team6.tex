@@ -1,0 +1,503 @@
+\documentclass{ieeeojies}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{adjustbox}
+\usepackage{hyperref}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+\title{Forecasting Vietnam Bank Stock Price by Utilizing Machine Learning and Statistical Models}
+\author{ \footnotesize
+\begin{tabular}{@{}c@{\hspace{0.3cm}}c@{\hspace{0.3cm}}c@{\hspace{0.3cm}}}
+Huynh Thi Ha Giang & Vu Bao Han & Nguyen Gia Huy \\
+STAT3013.O11.CTTT& STAT3013.O11.CTTT & STAT3013.O11.CTTT \\
+University of Information Technology & University of Information Technology & University of Information Technology\\
+Email: 21522021@gm.uit.edu.vn&Email: 21522040@gm.uit.edu.vn&Email: 21522152@gm.uit.edu.vn\\
+\\
+\end{tabular}
+}
+
+
+\markboth
+{Author \headeretal: H. T. H. Giang, V. B. Han, N. G. Huy}
+{Author \headeretal: H. T. H. Giang, V. B. Han, N. G. Huy}
+
+\begin{abstract}
+Banking stocks are securities which released by banks, this stock is an idealistics for people to invest in a long-term. Especially, in Vietnam, bank is one of the most valuable majors in economic development. Banking stocks have contributed in developed the vibrant of VN-index in the past few years. In addition, compared to many other industries, banking stocks are still in an attractive price zone for investment because they have not grown much in the past $year^{1}$ according to \textbf{Tap Chi Tai Chinh VN}. In our country-Vietnam, not many forecasting about stocks have been concentrated and developed. Therefore, after researching and experiment, we choose ARIMA, MLR, SARIMAX, FK, SVR, RNN, GNN, VECM to forecast the banking stocks. We especially concentrate on \textbf{Vietcombank (VCB)}, \textbf{Vietinbank (CTG)} and \textbf{Sacombank (STB)} stocks. 
+\end{abstract}
+
+\begin{keywords}
+    \textbf{Time Series Analysis, Forecasting, Prediction, ARIMA, MLR, SARIMAX, FK, SVR, RNN, GNN, VECM}.
+\end{keywords}
+
+\titlepgskip=-15pt
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+In our contemporary era, stock investment is dynamic more than ever, this not just contributes to the world economy but our country-Vietnam. According to VTV news, by the end of March 2023, the market recorded more than 7.03 million securities accounts, including nearly 7 million accounts of domestic $investors^2$ . 
+
+Therefore, the stock price is getting the most interest and concern since it is always volatile over time. However, to participate in this competition is not easy, many people think that they only need to invest, purchase as the stock hits the bottom, and sell stock once it reaches a peak. But that is not how the wiseman do, follow by Rothschild family- the most famous of European banking dynasties, the secret of their success in the stock market is that they never purchase the stock as it hits a bottom and sells when it reaches a $peak^3$ . 
+
+Nowadays, many Vietnamese desire to join this market, so as a Vietnamese, our group wants to provide some support and assistance to our country by forecasting the stock price using statistical methods, machine learning, and deep learning. With the purpose of helping people, we especially concentrate on Vietnam banking stock since in the past few years, Vietnam banks have launched many stocks for long-term investing and owning.
+
+This study employs diverse statistical model, machine learning and deep learning algorithm as Multiple Linear Regression, Support Vector Regression, ARIMA, SARIMAX, Kalman Filter, RNN, GNN and VECM to forecast the next 30 days of Vietnam Bank stock price like VCB, CTG, and STB.
+
+\section{RELATED WORKS}
+\subsection{Historical Context}
+The inception of time series analysis theories can be traced back to the early exploration of stochastic processes. The initial practical utilization of autoregressive models in analyzing data can be credited to the contributions of G. U Yule and J. Walker during the 1920s and 1930s.
+
+In contemporary times, the widely employed models known as Box-Jenkins models are predominant, and many forecasting and seasonal adjustment techniques can be linked back to the foundations laid by these models. 
+
+\subsection{First approaches}
+The initial extension involved embracing multivariate ARMA models, with VAR models (Vector AutoRegression) gaining significant popularity. It's important to note that these methods are limited to stationary time series. Economic time series, in particular, frequently demonstrate an upward trend, indicating non-stationarity, often associated with a unit root.With this milestone, there were many more models have been applied to forecast and predict on time-series $dataset^4$. 
+
+\subsection{Previous Approaches}
+In the year 2022, a study conducted by Wenjun Zhang, Zhensong Chen, Jianyu Miao, and Xueyong Liu explored the application of Graph Neural Networks $GNN^5$ in predicting stock prices. The findings of the research provided evidence for the successful implementation of the GNN algorithm in the analysis of time series data.
+
+Stock price prediction based on error correction model VECM and Granger causality $test^6$ which was researched and cite by Yang Ning, Liu Chun Wah, Erdan Luo. This research has proved that VECM is a powerful method to forecast about the long-run relationship in stock price and macroeconomic variables.
+
+In 2017, Yagmur Gizem Cinar, Hamid Mirisaee, Parantapa Goswami, Eric Gaussier, Ali Ait-Bachir, Vadim Strijov from University of Grenoble has researched and applied the RNN models on time-seriese forecasting as Time Series Forecasting using RNNs: an Extended Attention Mechanism toModel Periods and Handle Missing Values.The result of this research has proved the abilities of RNNs for modeling and forecasting time series which showed that these vari-ants rely more on actual values and less on padded or in-terpolated values than the original RNNs, thus making theproposed RNN more robust to missing value.
+
+\section{METHODS}
+
+\subsection{Data Collection}
+We obtained stock prices data from the \textit{investing.com} website, which is a platform that provides a wide range of information for various financial markets. The dataset is a trio of stock prices including \textbf{Vietcombank (VCB)}, \textbf{Vietinbank (CTG)} and \textbf{Sacombank (STB)} from January 20, 2016 to January 19, 2023, and save it as a csv file. Each line includes date, price, open, high, low, vol.
+
+\begin{table}[ht]
+\centering
+\adjustbox{max width=0.5\textwidth}{
+\begin{tabular}{|c|c|}
+        \hline
+        \textbf{Attribute} & \textbf{Describe} \\
+        \hline
+        Date & Stock price tradding day \\
+        \hline
+        Price & The closing/final price of the stock \\
+        \hline
+        Open & The initial opening/price at a certain time\\
+        \hline
+        High & Highest price of opening price \\
+        \hline
+        Low & Lowest price of opening price \\
+        \hline
+        Vol & Number of transactions during the day \\
+        \hline
+    \end{tabular}}
+\end{table}
+
+\subsection{Descriptive Statistics}
+The descriptive statistics of three stock price: \textbf{Vietcombank (VCB)}, \textbf{Vietinbank (CTG)} and \textbf{Sacombank (STB)}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.4\textwidth]{Fig1.png}
+  \caption{Descriptive Statistics of three Dataset’s Stock Price}
+  \label{fig:example}
+\end{figure}
+\subsubsection*{\textbf{VIETCOMBANK}}
+VCB or Vietcombank also recognized as the Joint Stock Commercial Bank for Foreign Trade of Vietnam.VCB was founded on 1 April 1963, and from then till now, VCB has been known as the greatest bank in Vietnam. The stock price of VCB is volatile between 80,000VND to 83,900VND. With the outstanding shares as 5.589.091.262, VCB also reached 1 billion US dollars as revenue.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.28\textwidth]{Fig2.png}
+  \caption{Histogram And Boxplot of VCB’s Stock Price}
+  \label{fig:example}
+\end{figure}
+\subsubsection*{\textbf{SACOMBANK}}
+Sacombank was founded in 1991, with the long history of development. Sacombank is now has the authorized capital at 492.637 billions Vietnam Dong.The outstanding shares of Sacombank is now reached 1.885.215.716 with the rate volatile by day at 27,60 - 28,10.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig3.png}
+  \caption{Histogram And Boxplot of STV’s Stock Price}
+  \label{fig:example}
+\end{figure}
+\subsubsection*{\textbf{VIETTINBANK}}
+CTG is an acronym for Vietinbank also recognized as Vietnam Joint Stock Commercial Bank for Industry And Trade. Vietinbank was founded in 1988. Vietinbank also recognized as Vietnam Joint Stock Commercial Bank for Industry And Trade. Vietinbank was founded in 1988.With the outstanding shares as 4.805.750.609 and the market capitalization at 144.412,81 billion Vietnam Dong.Vietinbank is illustrated for the great and the legit at the stock market. 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.28\textwidth]{Fig4.png}
+  \caption{Histogram And Boxplot of CTG’s Stock Price}
+  \label{fig:example}
+\end{figure}
+
+\subsection{Learning Algorithms}
+\subsubsection{\textbf{Linear Regression}}
+Linear regression is known as a statistical method to determine the value of a dependent variable from an independent variable. This method also measures the coefficient between two variables. The linear regression model used for dependent varible prediction is based on one or plural independent variables. The linear model is the relationship between each coefficient and its variable (feature) is $linear^{7}$.
+
+The model typically has the following $equation^{8}$:
+\begin{equation*}
+    y = \beta_{0} + \beta_{1}\cdot x_{1} + \beta_{2}\cdot x_{2} + ... + \beta_{n}\cdot x_{n} + \epsilon
+\end{equation*}
+
+Where:
+\begin{itemize}
+    \item 	y  dependent variable
+    \item $\beta_{0}$ is the intercept term
+    \item $\beta_{1}$, $\beta_{2}$ $...$ $\beta_{n}$ is the regression coefficient
+    \item $x_1$, $x_2$, $x_n$ is the independent variable
+    \item $\epsilon$ represents the random error or residual term
+\end{itemize}
+
+\subsubsection{\textbf{Support Vector Regression}}
+Support Vector Regression, or SVR, is known as a regression algorithm used in statistical analysis. SVR í a counterpart of SVM- Support Vector Machines.However, SVM is used for categorical target variables, while SVR is used for continuous target variables.For some time series that are non-linear, SVR will forecast more accurate and can optimize the errors. SVR acknowledges the presence of non-linearity in the data and provides a proficient prediction $model^9$ . 
+
+The idea of SVR is to predict for the continuous values from a given input ans is to fit a curve (or line) in the feature space that has the maximum number of data points.For specific, SVR works by finding the hyperplane that best fits the data points while also maximizing the margin, which is the distance between the hyperplane and the closest data points. This allows SVR to capture the underlying patterns in the data and make predictions based on $them^{10}$ .
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{Fig5.png}
+  \caption{Super Vector Regression Illustration}
+  \label{fig:example}
+\end{figure}
+
+The formula to optimize SVR with w being the
+unknown parameter vector:
+\begin{equation*}
+    min(\frac{1}{2} \cdot \|w\|^2 + c \cdot \sum_{i=1}^N(\epsilon_i + \epsilon_i^{*})) 
+\end{equation*}
+
+The main formula:
+\begin{equation*}
+    f(x) = \sum_{i=1}^N (\alpha_i - \alpha_i^{*})\cdot k(x_i,x)
+\end{equation*}
+
+\begin{itemize}
+    \item The kernel function $k(x_i,x)$  can be chosen based on the specific problem and could be a linear kernel, polynomial kernel, radial basis function (RBF) kernel.
+    \item Polynomial Kernel 
+\[K(x_i, x_j) = (\gamma x_i \cdot x_j + r)^d\]
+
+    \item Radial Basis RBF Kernel
+\[K(x_i, x_j) = \exp\left(-\frac{\|x_i - x_j\|^2}{2\sigma^2}\right)\]
+
+\end{itemize}
+\subsubsection{\textbf{Recurrent Neural Network}}
+Recurrent Neural Network is one of a type of Neutral Network , there are four types of RNNs based on the number of inputs and outputs in the network: 1-1, 1-many, many-1, many-many.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{Fig6.png}
+  \caption{RNN Architecture}
+  \label{fig:example}
+\end{figure}
+
+Recurrent Neural Network consists of multiple fixed activation function units, one for each time step. Each unit has an internal state which is called the hidden state of the unit. This hidden state signifies the past knowledge that the network currently holds at a given time step. This hidden state is updated at every time step to signify the change in the knowledge of the network about the $past^{11}$.
+
+The formula for calculating the current state:
+\begin{equation*}
+    h_t = f(h_{t-1},x_t)
+\end{equation*}
+
+The formula for applying Activation function(tanh):
+\begin{equation*}
+    h_t = tanh(W_{hh}\cdot H_{t-1} + W_{xh}\cdot x_t)
+\end{equation*}
+
+The formula for calculating output:
+\begin{equation*}
+    y_t = W_{hy}\cdot W_{ht}
+\end{equation*}
+
+\subsubsection{\textbf{Auto Regressive Integrated Moving Average (ARIMA)}}
+ARIMA, a renowned forecasting model widely used in financial and data science for time series applications, was formulated by George Box and Gwilyn Jenkins in 1970. Grounded in the concept of stationary series, ARIMA combines Moving Average (MA), Auto-Regressive (AR), and Integrated (I) components [10]. 
+
+A stationary series exhibits consistent mean, variance, and autocorrelation values over time, devoid of any trend factor.
+
+There are two methods for stationarity testing:
+\begin{itemize}
+    \item Dickey Fuller3 (DF)
+    \item Improved Dickey Fuller (ADF4)
+\end{itemize}
+
+If the p-value is less than 0.05, the data is considered a stationary series. An ARIMA model is labeled as an ARIMA model (p,d,q), where in:
+
+\begin{itemize}
+    \item p is the number of autoregressive terms
+    \item d is the number of differences
+    \item q is the number of moving averages
+\end{itemize}
+
+\textbf{AutoRegressive-AR(p)} is a regression model with lagged values of y, until p-th time in the past, as predictors. Here, p is the number of lagged observations in the model, $\epsilon$ is white noise at time t, c is a constant and $\phi$ are parameters:
+\begin{equation*}
+    y_t = c + \phi_1 \cdot y_{t-1} + \phi_2 \cdot y_{t-2} + ... + \phi_p \cdot y_{t-p} + \epsilon_t
+\end{equation*}
+
+Where:
+\begin{itemize}
+    \item $y_t$ is the current value of the time series
+    \item c is the intercept
+    \item $\phi_1$, $\phi_2$,..., $\phi_3$ are the autoregressive parameters and $\epsilon_t$  is the random error term. 
+\end{itemize}
+
+\textbf{Integrated-I(d)}: The integration element signifies the conversion of a non-stationary time series into a stationary state through differencing operations. This procedure aids in eliminating trends and enhancing predictability in the time series:
+\begin{equation*}
+    y_t^{'} = y_t - y_{t-1}
+\end{equation*}
+
+\textbf{Moving average-MA(q)}: The moving average component uses moving average parameters to predict the current value based on previous errors and random values in the time series:
+\begin{equation*}
+    y_t = c + \theta_1 \cdot \epsilon_{t-1} + \theta_2 \cdot \epsilon_{t-2} + \theta_q \cdot \epsilon_{t-q} + \epsilon_t
+\end{equation*}
+
+\subsubsection{\textbf{SARIMAX}}
+SARIMAX, an acronym for Seasonal Auto Regressive Integrated Moving Average with eXogenous factors . This model is the combination between Seasonal ARIMA and ARIMAX which use the external data to enhance the accurate rate of ARIMA model. It is used for modeling and forecasting time series data that exhibit seasonal patterns and may be influenced by external factors.
+
+About SARIMAX (p, d, q)(P, D, Q, s):
+\begin{itemize}
+    \item P: Seasonal autoregressive order
+    \item D: Seasonal differencing order
+    \item Q: Seasonal moving average order
+    \item S: Length of the seasonal cycle
+\end{itemize}
+
+The SARIMAX Formula $:^{12}$
+\begin{equation*}
+\begin{aligned}
+    d_t &= c + \sum_{n=1}^p a_n d_{t-n} \cdot \sum_{n=1}^q \theta_n \cdot \epsilon_{t-n} + \sum_{n=1}^r \beta_n \cdot x_{n_t} \\
+    &\quad + \sum_{n=1}^P \theta_n \cdot d_{t-sn} + \sum_{n=1}^Q \eta_n \cdot \epsilon_{t-sn} + \epsilon_t
+\end{aligned}
+\end{equation*}
+
+\subsubsection{\textbf{Vector Error Correction Model}}
+Vector Error Correction Model is a cointegrated VAR model-Vector Autoregression. This is a statistical method to capture the relationship between multiple time series variables. The idea of VECM, which consists of a VAR model of the order p - 1 on the differences of the variables, and an error-correction term derived from the known (estimated) cointegrating $relationship^13$ .While, the VAR model only be estimated once the variables are stationary, the VECM can solve the problem with the non-stationary or cointegrated:
+\begin{equation*}
+    \Delta_{Y_{t}} = \upsilon + Y_{t-1}+ \sum_{i=1}^{\rho - 1} \theta_i 
+\Delta_{Y_{t-1}} + \mu_t
+\end{equation*}
+\begin{equation}
+\Delta_{Y_{t}} = \upsilon + Y_{t-1}+ \sum_{i=1}^{\rho - 1} \theta_1 \Delta_{Y_{t-1}} + \theta_2 \Delta_{Y_{t-2}} + ... + \theta_{\rho -1} \Delta_{Y_{t - {(\rho-1)}}} + \mu_t
+\end{equation}
+
+Before performing the VECM, we need to perform Unit Root Test first to determine if the model assumes that the variables are integrated of order one, or I(1), which means they are non-stationary but their first differences are stationary. If the variables are not I(1), but are cointegrated, it implies the existence of a long-run relationship among them, which is a prerequisite for using $VECM^{14}$. 
+
+\subsubsection{\textbf{Kalman Filter}}
+ Kalman Filter has long been regarded as the optimal solution to many tracking and data prediction tasks. Its use in the analysis of visual motion has been documented frequently. The standard Kalman filter derivation is given here as a tutorial exercise in the practical use of some of the statistical techniques outlied in previous sections. The filter is constructed as a mean squared error minimiser, but an alternative derivation of the filter is also provided showing how the filter relates to maximum likelihood statistics. Documenting this derivation furnishes the reader with further insight into the statistical constructs within the filter. The purpose of  ltering is to extract the required information from a signal, ignoring everything else. How well a filter performs this task can be measured using a cost or loss function.
+
+ Kalman filter algorithm consists of two stages are prediction and update: \\
+\textbf{Predict Stage}:
+    \begin{align*}
+    &\text{Predict State Estimate:} && A \cdot \hat{x}_{k-1} + B \cdot \mu_k \\
+    &\text{Predict the coefficient of matrix:} && \hat{P}_k = A \cdot \hat{P}_{k-1} \cdot A^T + Q
+\end{align*}
+\textbf{Update State}:
+    \begin{align*}
+    &\text{Kalman Gain:} \hspace{0.5em} K = P_p \cdot H^T \cdot (H \cdot P_k \cdot H^T + R)^{-1} \\
+    &\text{Estimate System State:} \hspace{0.5em} \hat{x}_k = \hat{x}_k + K_k \cdot (z_k - H_{\hat{x}_k}) \\
+    &\text{System State Error Covariance Matrix:} \hspace{0.5em} P_k = (I - K_k \cdot  H)\cdot P_k
+    \end{align*}
+    
+\subsubsection{\textbf{Graph Neural Network}}
+GNN is an extension of both recursive neural networks and random walk models and that it retains their characteristics. The model extends recursive neural networks since it can process a more general class of graphs including cyclic, directed, and undi- rected graphs, and it can deal with node-focused applications without any preprocessing steps. GNNs operate on the principle of information diffusion within a graph. Nodes in the graph correspond to processing units, connected based on graph connectivity. These units iteratively update their states and exchange information until a stable equilibrium is reached. The GNN output is computed locally at each node, ensuring a unique stable equilibrium is always present.
+
+In tackling the challenges of time-series analysis, I've opted for a robust approach by combining two pivotal neural network architectures: Graph Convolutional Network (GCN) and Long Short-Term Memory (LSTM).
+
+Firstly, I leverage GCN to elucidate spatial relationships within the data. In the context of time-series, stock prices serve as spatial features. GCN effectively models the spatial interactions among these features, offering a clear perspective on the spatial structure of the time series.
+
+Subsequently, LSTM is employed to capture the temporal aspect. It facilitates the model in learning and understanding temporal relationships, enabling it to grasp fluctuations, trends, and other temporal factors within the data. Through the synergy of GCN and LSTM, the model adeptly addresses both the spatial and temporal dimensions of the time-series data, resulting in robust predictive performance and high accuracy.
+\vspace{6em}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{GNN_new.png}
+  \caption{GNN Architecture}
+  \label{fig:example}
+\end{figure}
+
+\subsection{Evaluating Forecasting Models:}
+\subsubsection{\textbf{Mean Absolute Percentage Error (MAPE):}}
+\textbf{MAPE} is the mean absolute percentage error, which is a relative measure that essentially scales MAD to be in percentage units instead of the variable’s units.
+\begin{align*}
+    &\text{Formula:} \hspace{0.5em} M = \frac{1}{2} \cdot \sum_{t=1}^n |\frac{A_t - F_t}{A_t}|
+\end{align*}
+
+Where:
+\begin{itemize}
+    \item n is the number of fitted points
+    \item $A_t$ is the actual value
+    \item $F_t$ is the forecast value
+    \item $\sum$ is summation notation (the absolute value is summed for every forecasted point in time)
+\end{itemize}
+
+\subsubsection{\textbf{Root Mean Square Error (RMSE):}}
+The root mean square error \textbf{(RMSE)} measures the average difference between a statistical model’s predicted values and the actual values. Mathematically, it is the standard deviation of the residuals. Residuals represent the distance between the regression line and the data points.
+
+\begin{align*}
+    &\text{Formula:} \hspace{0.5em} RSME = \sqrt{\frac{\sum(y_i - \hat{y}_i)^2}{N-P}}
+\end{align*}
+
+\begin{itemize}
+    \item $y_i$ is the actual value for the ith observation
+    \item $\hat{y}_i$ is the predicted value for the ith observation
+    \item N is the number of observations
+    \item P is the number of parameter estimates, including the constant
+\end{itemize}
+
+\subsubsection{\textbf{Mean Absolute Error (MAE)}}
+MAE is a measure of accuracy or error in predictive models or regression analysis. It calculates the average absolute difference between predicted values and the corresponding actual values.
+
+\begin{align*}
+    &\text{Formula:} \hspace{0.5em} MAE = \frac{1}{2}\cdot \sum_{i=1}^n |y_i - \hat{y}_{i}|
+\end{align*}
+
+Where:
+\begin{itemize}
+    \item n: number of observation
+    \item $y_i$ : the actual value of the $i^{th}$ observation
+    \item  $\hat{y}_i$ : the predicted value of the $i^{th}$ observation
+\end{itemize}
+
+\section{RESULT}
+
+\subsection{VIETCOMBANK (VCB)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.3\textwidth]{VCB_P.png}
+  \caption{Vietcombank Result}
+  \label{fig:VCB}
+\end{figure}
+\vspace{10mm}
+\subsection{VIETINBANK (CTG)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.35\textwidth]{VTB_P.png}
+  \caption{Vietinbank Result}
+  \label{fig:CTG}
+\end{figure}
+\subsection{SACOMBANK (STB)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.35\textwidth]{SCB_P.png}
+  \caption{Sacombank Result}
+  \label{fig:STB}
+\end{figure}
+\vspace{30mm}
+\section{PREDICTION}
+\subsection{VIETCOMBANK (VCB)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.35\textwidth]{VCB1.png}
+  \caption{SARIMAX in VCB stock prediction (7:3)}
+  \label{fig:example}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.35\textwidth]{VCB2.png}
+  \caption{KALMAN FILTER in VCB stock prediction (7:3)}
+  \label{fig:example}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.3\textwidth]{VCB3.png}
+  \caption{Graph neural network in VCB stock prediction (8:2)}
+  \label{fig:example}
+\end{figure}
+% \vspace{30em}
+\subsection{VIETTINBANK (CTG)}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.3\textwidth]{CTG1.png}
+  \caption{SARIMAX in CTG stock prediction (7:3)}
+  \label{fig:example}
+\end{figure}
+%\vspace{-1em}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.3\textwidth]{CTG2.png}
+  \caption{KALMAN FILTER in CTG stock prediction (8:2)}
+  \label{fig:example}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.3\textwidth]{CTG3.png}
+  \caption{Graph neural network in CTG stock prediction (9:1)}
+  \label{fig:example}
+\end{figure}
+
+
+\vspace{10em}
+\subsection{SACOMBANK (STB)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.3\textwidth, height=0.15\textwidth]{STB1.png}
+  \caption{SARIMAX in STB stock prediction (7:3)}
+  \label{fig:example}
+  
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.3\textwidth, height=0.15\textwidth]{STB2.png}
+  \caption{KALMAN FILTER in STB stock prediction (7:3)}
+  \label{fig:example}
+  \centering
+  \includegraphics[width=0.3\textwidth, height=0.15\textwidth]{STB3.png}
+  \caption{Recurrent Neural Network in STB stock prediction (8:2)}
+  \label{fig:example}
+  
+\end{figure}
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.3\textwidth, height=0.15\textwidth]{STB3.png}
+%   \caption{Recurrent Neural Network in STB stock prediction (8:2)}
+%   \label{fig:example}
+% \end{figure}
+
+
+\vspace{20mm}
+\section{CONCLUSION}
+In the intricate tapestry of stock market dynamics, our exploration into predicting stock price for \textbf{Vietcombank(VCB), Vietinbank(CTG) and Sacombank(STB)} unfolds as a journey through statistical, machine learning, and deep learning realms. Much like deciphering a complex narrative, we have harnessed the power of Kalman Filter, SARIMAX, RNN, and GNN to unravel the patterns and cycles inherent in stock price fluctuations.
+
+Beyond the apparent chaos, we recognize that stock values and volatility are not mere random numbers but represent a mosaic of discrete-time data. Our approach, rooted in understanding these patterns and cycles, transcends traditional forecasting methods. The integration of Kalman Filter and SARIMAX provides a lens into the prevailing tendencies, while the adaptability of RNN and the sophistication of GNN delve into the intricate spatial and temporal relationships within the stock market data.
+
+Treating stock market data as a time series has been a cornerstone of our methodology, enabling us to harness the wisdom embedded in past stock prices to illuminate the trajectory for the coming month. The advantage of this predictive prowess lies not merely in speculation but in offering investors a strategic tool. It unveils the future behavior of the market, guiding investors to discern opportune moments and the types of stocks that hold the potential to nurture their investments.
+
+In conclusion, our foray into the prediction of stock prices for prominent banks goes beyond the conventional. It is a testament to the fusion of statistical precision, machine learning acumen, and deep learning sophistication. This comprehensive approach not only enriches our understanding of the stock market but also equips investors with a compass for navigating its dynamic landscape, fostering informed decision-making and the potential for sustained financial growth.
+
+
+\section*{Acknowledgment}
+From the bottom of our hearts, we would like to send our warmest thank you to all the faculty from University of Information and Technology for providing us all the fundamental knowledge to implement this project. Nevertheless, for us to develop this project, it is impossible not to mentioned \textbf{Assoc.Prof.Dr. Nguyen Dinh Thuan} and \textbf{Teaching Assistant Mr. Nguyen Minh Nhut}. Thank you for your devotional lessons and valuable sharing to help us gain more knowledge about Statistics Analysis field. We have done this project in more than a month, and from the bottom of our heart, that was a precious moment in our student’s life. This project helped us to engage our analysis, developing, processing abilities and especially collaboration skill. We have had a clearer aspect about our future of career path. This is also contributing to our life experience package that will always go alongside with us until the end of our life.
+Based on all the fundamental studies combine with enthusiastic support from the instructor, we have completed this project successfully. However, since this is our very first project, so it is impossible to avoid some minor mistakes. We are looking forward to receiving valuable comments and advice from all lecturers to improve our wider scale project in near future.
+Once again, we would like to sincerely send to you a huge thank from the bottom of our heart.
+
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{reference}
+
+$^1$ Banking group stocks: Potential in the medium and long term. \\ \textbf{{https://tapchitaichinh.vn/co-phieu-nhom-ngan-hang-tiem-nang-trong-trung-va-dai-han.html}}.\\
+$^2$ About 7\% of the Vietnamese population invests in stocks (2023). \\ \textbf{https://vtv.vn/kinh-te/khoang-7-dan-so-viet-nam-dau-tu-chung-khoan-20230408151745992.html}. \\
+$^3$ BUYING THE BOTTOM. \\ \textbf{https://mastersinvest.com/buybottomquotes}. \\
+$^4$ Stockholme University , Statistical department\\
+\textbf{https://www.su.se/english/research/research-subjects/}\\
+\textbf{statistics/statistical-models-in-the-social-sciences/a-brief-history-of-time-series-analysis-1.612367}.
+ \\
+$^5$ ‘Research on Graph Neural Network in Stock Market (2022)’, Wenjun Zhang, Zhensong Chen, Jianyu Miao, Xueyong Liu. 
+ \\
+$^6$ Yang Ning, Liu Chun Wah, Erdan Luo (2018) , ‘Stock price prediction based on error correction model and Granger causality test (2021)’ research in Cluster Computing 22. \\
+$^7$ Peter Bruce, Andrew Bruce and Peter Gedec (2020) ‘Practical Statistics for Data Scientists’ Regression and Prediction, Multiple Linear Regression pg.150-151.\\
+$^8$ Hyndman, R.J. and Athanasopoulos, G. (2021) ‘Forecasting: Principles and practice’. Melbourne: OTexts. Chapter 5: Time series regression models.\\
+$^9$ Alakh Sethi ‘Support Vector Regression Tutorial for Machine Learning’ (2023) \\ \textbf{https://www.analyticsvidhya.com/support-vector-regression-tutorial-for-machine-learning/h-what-is-a-support-vector-machine-svm}.\\
+$^{10}$ S. S. Keerthi and C. J. Lin  ‘Support Vector Machines for Time Series Forecasting’ paper (2010).\\
+$^{11}$ Introduction to Recurrent Neural Network\\
+\textbf{https://www.geeksforgeeks.org/introduction-to-recurrent-neural-network/}.
+ \\
+$^{12}$ Time Series Forecasting with ARIMA, SARIMA and SARIMAX. \\
+$^{13}$ S. Winarno et al 2021 , ‘Application of Vector Error Correction Model (VECM) and Impulse Response Function for Daily Stock Prices’ paper. \\
+$^{14}$ James D.Hamilton (1994) ‘Time Series Analysis’, Chapter 11 ‘Vector Autoregressions’, 11.5 “Vector Autoregressions and Structural Econmetric Models pp.324-335. \\
+ 
+\EOD
+
+\end{document}
